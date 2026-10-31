@@ -1,12 +1,13 @@
 (() => {
   'use strict';
   const story = window.MUMMY_STORY;
-  const STORE = 'shkoala-mummy-story-v2';
+  const STORE = 'shkoala-mummy-story-v3';
   const $ = id => document.getElementById(id);
   const fresh = () => ({ version: story.version, page: 0, steps: {}, solved: [], drafts: {}, frames: {}, read: {} });
   let progress = load();
   let mounted = '';
   let motionTimer;
+  let answerTimer;
   let toastTimer;
   let speaking = false;
   let speechSession = 0;
@@ -27,8 +28,9 @@
     return e;
   };
   const markup = text => { const holder = node('div'); holder.innerHTML = text; return holder.firstElementChild; };
+  const asset = name => `assets/${name.includes('.') ? name : `${name}.png`}`;
   const picture = (name, cls = '', alt = '') => {
-    const img = node('img', cls); img.src = `assets/${name}.png`; img.alt = alt; img.draggable = false; img.decoding = 'async'; return img;
+    const img = node('img', cls); img.src = asset(name); img.alt = alt; img.draggable = false; img.decoding = 'async'; return img;
   };
   const icon = name => {
     const eyes = colour => `<path d="M2 20C8 4 21 4 27 20c-6 13-19 13-25 0Zm35 0C43 4 56 4 62 20c-6 13-19 13-25 0Z" fill="#fff" stroke="#a78c79" stroke-width="1.5"/><circle cx="14.5" cy="19" r="9" fill="${colour}"/><circle cx="49.5" cy="19" r="9" fill="${colour}"/><circle cx="14.5" cy="19" r="5" fill="#302827"/><circle cx="49.5" cy="19" r="5" fill="#302827"/><circle cx="17" cy="16" r="2.5" fill="#fff"/><circle cx="52" cy="16" r="2.5" fill="#fff"/>`;
@@ -76,7 +78,7 @@
   const frame = () => progress.frames[key()] || 0;
   const opening = () => !solved() && (progress.read[key()] || 0) < (step().opening?.length || 0);
   const draft = () => progress.drafts[key()] || [];
-  const currentLines = () => opening() ? step().opening[progress.read[key()] || 0] : solved() ? step().after[frame()] : step().before;
+  const currentLines = () => opening() ? step().opening[progress.read[key()] || 0] : solved() && !step().autoAdvance ? step().after[frame()] : step().before;
 
   function toast(text) {
     clearTimeout(toastTimer); $('toast').textContent = text;
@@ -93,7 +95,7 @@
     if (speaking) { stopSpeech(); return; }
     stopSpeech();
     const session = speechSession;
-    let text = currentLines().map(l => `${story.speakers[l.who].name} says: ${l.text}`).join(' ');
+    let text = currentLines().map(l => l.text).join(' ');
     if (!opening()) text += ` ${step().prompt} ${step().instruction} ${solved() ? '' : step().choices.map(c => c.text).join('. ')}`;
     const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-GB'; utterance.rate = .83;
     const voices = window.speechSynthesis.getVoices();
@@ -113,35 +115,33 @@
     return markup('<svg viewBox="0 0 1142 1378" role="img" aria-label="White cat with brown eyes and a moving tail"><defs><clipPath id="tail-mask"><path d="M822 575H1142V1280H660L650 1170 782 1105 868 930 792 840Z"/></clipPath></defs><g class="cat-tail"><image href="assets/cat.png" width="1142" height="1378" clip-path="url(#tail-mask)"/></g><image href="assets/cat-body.png" width="1142" height="1378" preserveAspectRatio="none"/></svg>');
   }
   function owlPuppet() {
-    return markup('<svg class="owl-flyer" viewBox="0 0 1312 1199" aria-hidden="true"><defs><clipPath id="owl-left-mask"><path d="M0 0H430L630 650 550 840 330 920 0 800Z"/></clipPath><clipPath id="owl-right-mask"><path d="M840 570 1050 0H1312V930L1000 930 830 790Z"/></clipPath><clipPath id="owl-body-mask"><path d="M460 310H920L1030 820 960 1199H380L330 850Z"/></clipPath></defs><g class="owl-left-wing"><image href="assets/owl.png" width="1312" height="1199" clip-path="url(#owl-left-mask)"/></g><g class="owl-right-wing"><image href="assets/owl.png" width="1312" height="1199" clip-path="url(#owl-right-mask)"/></g><image href="assets/owl.png" width="1312" height="1199" clip-path="url(#owl-body-mask)"/></svg>');
+    return markup(`<div class="owl-flyer" aria-hidden="true">${[0, 1, 2, 3].map(i => `<svg class="owl-frame pose-${i}" viewBox="${i % 2 * 627} ${Math.floor(i / 2) * 627} 627 627"><image href="assets/owl-flap.webp" width="1254" height="1254"/></svg>`).join('')}</div>`);
   }
   function actor(name) {
     const a = node('div', `actor actor-${name}`); a.dataset.character = name;
     if (name === 'cat') a.append(catPuppet());
     else if (name === 'owl') a.append(picture('owl-perched', 'owl-rest', 'White owl with two legs'), owlPuppet());
-    else if (name === 'frog') a.append(picture('frog', 'frog-idle', 'Frog'), picture('frog-jump', 'frog-air', ''));
-    else a.append(picture(name === 'ghost' ? 'little-ghost' : name, '', story.speakers[name]?.name || name));
+    else if (name === 'frog') a.append(picture('frog', 'frog-idle', 'Frog'));
+    else a.append(picture(name === 'ghost' ? 'little-ghost' : name === 'spider' ? 'spider-eight.webp' : name, '', story.speakers[name]?.name || name));
     return a;
   }
   function drawScene() {
     clearTimeout(motionTimer);
     const p = page(), scene = $('scene');
-    scene.closest('.illustration').style.setProperty('--scene-bg', `url("assets/${p.background}.png")`);
     scene.closest('.illustration').dataset.scene = p.scene;
     scene.className = `scene scene-${p.scene}`;
     const world = node('div', 'world');
-    world.append(picture(p.background, 'environment', p.place));
+    if (p.scene === 'house') world.append(markup('<svg class="house-picture" viewBox="0 0 1536 1024" role="img" aria-label="A large house with four rooms"><image href="assets/house.png" width="1536" height="1024"/><rect class="room-highlight" x="100" y="545" width="610" height="345" rx="18"/></svg>'));
+    else world.append(picture(p.background, 'environment', p.place));
     if (p.scene === 'homeward') world.append(picture('house', 'home-house', 'The ghost’s house'));
-    if (p.scene === 'house') world.append(node('div', 'room-highlight'));
     world.append(node('div', 'ground-shadow ghost-shadow'), actor('ghost'));
     if (p.partner) {
       if (['frog', 'cat', 'mummy'].includes(p.partner)) world.append(node('div', `ground-shadow ${p.partner}-shadow`));
-      if (p.partner === 'owl') world.append(markup('<svg class="owl-branch" viewBox="0 0 400 70" aria-hidden="true"><path d="M400 42C280 36 200 37 13 28" stroke="#8e7964" stroke-width="18"/><path d="M400 39C280 32 200 33 13 24" stroke="#b69a78" stroke-width="8"/><path d="m325 36 21-28m-70 27-16-16" stroke="#8e7964" stroke-width="9"/></svg>'));
       world.append(actor(p.partner));
     }
     if (['reunion', 'ending'].includes(p.scene)) for (let i = 0; i < 3; i++) world.append(node('span', 'love-heart', '♥'));
     const replay = node('button', 'replay-motion'); replay.type = 'button'; replay.id = 'replay-motion'; replay.title = 'Replay movement'; replay.setAttribute('aria-label', 'Replay movement'); replay.innerHTML = svg('replay');
-    replay.addEventListener('click', () => playMotion(p.partner === 'cat' ? 'cat-tail' : p.enter || (p.partner === 'mummy' ? 'mummy-float' : 'ghost-leave')));
+    replay.addEventListener('click', () => playMotion(p.partner === 'cat' ? 'cat-tail' : p.partner === 'owl' && solved() && step().motion === 'owl-flight' ? 'owl-flight' : p.enter || (p.partner === 'mummy' ? 'mummy-float' : 'ghost-leave')));
     scene.replaceChildren(world, replay);
     mounted = p.id;
     if (p.scene === 'ending') scene.classList.add('is-reunited');
@@ -150,7 +150,7 @@
   function playMotion(name) {
     const scene = $('scene');
     clearTimeout(motionTimer);
-    scene.classList.remove('is-hopping');
+    scene.classList.remove('is-hopping', 'frog-entering');
     const frog = scene.querySelector('.actor-frog'), owl = scene.querySelector('.actor-owl'), ghost = scene.querySelector('.actor-ghost'), mummy = scene.querySelector('.actor-mummy');
     owl?.classList.remove('is-flying', 'fly-enter', 'fly-circle');
     ghost?.classList.remove('leaving', 'going-home', 'approaching'); mummy?.classList.remove('rising');
@@ -163,8 +163,9 @@
     }
     void scene.offsetWidth;
     let duration = 1600;
-    if (name === 'frog-hop' && frog) { scene.classList.add('is-hopping'); duration = 1100; }
-    else if (name === 'owl-enter' || name === 'owl-flight') { owl?.classList.add('is-flying', name === 'owl-enter' ? 'fly-enter' : 'fly-circle'); duration = name === 'owl-enter' ? 2150 : 2650; }
+    if (name === 'frog-enter' && frog) { scene.classList.add('frog-entering'); duration = 1500; }
+    else if (name === 'frog-hop' && frog) { scene.classList.add('is-hopping'); duration = 950; }
+    else if (name === 'owl-enter' || name === 'owl-flight') { owl?.classList.add('is-flying', name === 'owl-enter' ? 'fly-enter' : 'fly-circle'); duration = name === 'owl-enter' ? 2450 : 3250; }
     else if (name === 'cat-tail') {
       const tail = scene.querySelector('.cat-tail');
       if (tail) { tail.style.animation = 'none'; void tail.getBoundingClientRect(); tail.style.animation = ''; }
@@ -175,7 +176,7 @@
     else if (name === 'room-glow') scene.classList.add('room-chosen');
     else if (name === 'reunite') scene.classList.add('is-reunited');
     motionTimer = setTimeout(() => {
-      scene.classList.remove('is-hopping'); owl?.classList.remove('is-flying', 'fly-enter', 'fly-circle'); mummy?.classList.remove('rising');
+      scene.classList.remove('is-hopping', 'frog-entering'); owl?.classList.remove('is-flying', 'fly-enter', 'fly-circle'); mummy?.classList.remove('rising');
       if (name === 'ghost-home') scene.classList.add('house-passed');
       scene.dataset.motion = '';
     }, duration);
@@ -186,7 +187,7 @@
     $('dialogue').replaceChildren(...lines.map(line => {
       const speaker = story.speakers[line.who];
       const bubble = node('div', `speech ${speaker.colour} ${line.who}${line.text.length > 90 ? ' long' : ''}`);
-      bubble.append(node('span', 'speaker', speaker.name), node('p', '', line.text));
+      bubble.append(node('p', '', line.text));
       return bubble;
     }));
   }
@@ -210,10 +211,14 @@
     const b = node('button', `choice${selected ? ' selected' : ''}`); b.type = 'button'; b.dataset.choice = c.id; b.setAttribute('aria-label', c.text);
     b.disabled = opening() || solved() || (step().mode === 'order' && selected);
     if (step().mode === 'multi') b.setAttribute('aria-pressed', String(selected));
-    if (c.image || c.room) {
+    if (c.pictureOnly) {
+      b.classList.add('picture-only'); b.append(graphic(c.icon));
+      const check = node('span', 'selection-tick', '✓'); check.setAttribute('aria-hidden', 'true'); b.append(check);
+    } else if (c.image || c.room) {
       const badge = node('span', 'letter', selected ? '✓' : String.fromCharCode(65 + i)); badge.setAttribute('aria-hidden', 'true');
       b.append(badge, c.room ? roomPicture(c.room) : picture(c.image), node('span', '', c.text));
     } else if (c.icon) b.append(graphic(c.icon), node('span', '', `${selected ? '✓ ' : ''}${c.text}`));
+    else if (step().mode === 'multi') b.append(node('span', '', c.text));
     else {
       const badge = node('span', 'letter', selected ? '✓' : String.fromCharCode(65 + i)); badge.setAttribute('aria-hidden', 'true');
       b.append(badge, node('span', '', c.text));
@@ -274,7 +279,7 @@
     story.pages.forEach((p, pi) => p.steps.forEach((s, si) => { if (s.unlock && (progress.solved.includes(`${p.id}:${si}`) || pi < progress.page)) s.unlock.forEach(id => known.add(id)); }));
     $('clues').replaceChildren(...story.clues.map(c => {
       const chip = node('div', known.has(c.id) ? 'clue' : 'clue locked');
-      if (known.has(c.id)) chip.append(graphic(c.icon, 'mini-icon'), document.createTextNode(c.text));
+      if (known.has(c.id)) { if (c.icon) chip.append(graphic(c.icon, 'mini-icon')); chip.append(document.createTextNode(c.text)); }
       else { chip.textContent = '?'; chip.setAttribute('aria-label', 'A clue to discover'); }
       return chip;
     }));
@@ -282,12 +287,14 @@
   function updateNav() {
     const moreLines = solved() && frame() < step().after.length - 1;
     const final = progress.page === story.pages.length - 1 && index() === page().steps.length - 1;
-    const text = opening() || moreLines ? 'Read on' : !solved() ? 'Choose an answer' : index() < page().steps.length - 1 ? 'Next question' : final ? 'Play again' : 'Next scene';
+    const text = opening() || moreLines ? 'Read on' : !solved() ? 'Choose an answer' : final ? 'Play again' : 'Next';
     $('next').disabled = !opening() && !solved();
     $('next').replaceChildren(document.createTextNode(text), node('span', '', final && solved() ? '↻' : '→')); $('next').lastChild.setAttribute('aria-hidden', 'true');
     $('back').disabled = progress.page === 0 && index() === 0 && !frame();
   }
   function render(options = {}) {
+    clearTimeout(answerTimer);
+    while (step().autoAdvance && solved() && index() < page().steps.length - 1) progress.steps[page().id] = index() + 1;
     const p = page(), s = step();
     const sceneChanged = mounted !== p.id;
     if (sceneChanged) drawScene();
@@ -295,16 +302,12 @@
     if (p.scene === 'homeward' && solved()) $('scene').classList.add('home-arrival', 'house-passed');
     if (p.scene === 'house') $('scene').classList.toggle('room-chosen', solved());
     if (p.scene === 'reunion') $('scene').classList.toggle('is-reunited', progress.solved.includes('reunion:4'));
-    $('chapter').textContent = `Scene ${progress.page + 1}`; $('place').textContent = p.place;
-    $('chapter-label').textContent = `${progress.page + 1} / ${story.pages.length}`; $('page-title').textContent = p.title;
-    $('step-dots').replaceChildren(...p.steps.map((_, i) => node('span', i === index() ? 'current' : progress.solved.includes(`${p.id}:${i}`) ? 'done' : '')));
-    $('step-dots').setAttribute('aria-label', `Question ${index() + 1} of ${p.steps.length}`);
+    $('place').textContent = p.place;
     $('question').textContent = s.prompt; $('instruction').textContent = s.instruction;
     drawDialogue(); document.querySelector('.sequence')?.remove(); document.querySelector('.opening-note')?.remove(); drawActivity();
     if (opening()) $('choices').before(node('div', 'opening-note', 'Read on to hear the clues.'));
     $('feedback').className = 'feedback'; $('feedback').textContent = solved() ? s.success : '';
     drawClues(); updateNav(); drawMap();
-    $('page-number').textContent = `Scene ${progress.page + 1} of ${story.pages.length}`;
     $('progress-bar').style.width = `${((progress.page + (solved() ? 1 : .15)) / story.pages.length) * 100}%`;
     document.title = `${p.title} · Are you my mummy?`;
     if (options.navigate) {
@@ -343,11 +346,19 @@
     stopSpeech(); const s = step();
     if (!solved()) progress.solved.push(key());
     progress.frames[key()] = 0;
+    if (s.autoAdvance) {
+      const completedKey = key();
+      drawActivity(); $('feedback').className = 'feedback'; $('feedback').textContent = '✓'; updateNav(); save();
+      if (s.motion) playMotion(s.motion);
+      answerTimer = setTimeout(() => { if (key() === completedKey) { progress.steps[page().id] = index() + 1; render({ navigate: true }); } }, 450);
+      return;
+    }
     render(); $('next').focus({ preventScroll: true });
     if (window.matchMedia('(max-width: 760px)').matches) $('main').scrollIntoView({ behavior: 'smooth', block: 'start' });
     if (s.motion || s.motionAt?.[0]) playMotion(s.motion || s.motionAt[0]);
   }
   function next() {
+    clearTimeout(answerTimer);
     stopSpeech();
     if (opening()) { progress.read[key()] = (progress.read[key()] || 0) + 1; render(); return; }
     if (!solved()) return;
@@ -361,11 +372,13 @@
     render({ navigate: true });
   }
   function back() {
+    clearTimeout(answerTimer);
     stopSpeech();
     if (solved() && frame() > 0) { progress.frames[key()] = frame() - 1; render(); return; }
     if (!solved() && (progress.read[key()] || 0) > 0) { progress.read[key()]--; render(); return; }
     if (index() > 0) progress.steps[page().id] = index() - 1;
     else if (progress.page > 0) { progress.page--; progress.steps[page().id] = page().steps.length - 1; }
+    if (step().autoAdvance) progress.solved = progress.solved.filter(k => k !== key());
     render({ navigate: true });
   }
   function drawMap() {
@@ -405,5 +418,5 @@
   });
   window.addEventListener('pagehide', stopSpeech);
   render();
-  ['cat', 'cat-body', 'frog', 'frog-jump', 'owl', 'owl-perched', 'mummy', 'little-ghost', 'spider', 'forest', 'pond', 'web', 'house', 'living-room'].forEach(name => { const img = new Image(); img.src = `assets/${name}.png`; });
+  ['cat', 'cat-body', 'frog', 'frog-jump', 'owl-perched', 'owl-flap.webp', 'mummy', 'little-ghost', 'spider-eight.webp', 'forest-wide.webp', 'spider-forest.webp', 'courtyard-wide.webp', 'owl-garden.webp', 'pond-wide.webp', 'house', 'living-room'].forEach(name => { const img = new Image(); img.src = asset(name); });
 })();
