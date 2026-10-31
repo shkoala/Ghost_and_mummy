@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#65508c">
+  <meta name="description" content="Help a little ghost find his mummy. A gentle, interactive English story with a choice on every page.">
+  <title>Are you my mummy? · ШКОАЛА</title>
+  <link rel="icon" href="assets/little-ghost.png" type="image/png">
+  <link rel="stylesheet" href="styles.css">
+  <script src="story.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#question">Skip to the question</a>
+  <header class="topbar">
+    <a class="brand" href="https://vk.ru/abc_shkoala" target="_blank" rel="noopener noreferrer" aria-label="ШКОАЛА — English teaching materials">
+      <span class="brand-mark" aria-hidden="true">Ш</span><span>ШКОАЛА<span class="brand-caption">little stories, big adventures</span></span>
+    </a>
+    <div class="book-name">Are you my mummy?</div>
+    <nav class="tools" aria-label="Story tools">
+      <button class="tool" id="listen" type="button" aria-label="Read this page aloud" title="Listen to this page"></button>
+      <button class="tool" id="fullscreen" type="button" aria-label="Full screen" title="Full screen"></button>
+      <button class="tool" id="teacher" type="button" aria-label="Teacher notes" title="Teacher notes"></button>
+    </nav>
+  </header>
+
+  <main id="main" class="book">
+    <section class="illustration" aria-label="Story picture">
+      <div class="scene-heading"><span id="chapter" class="chapter"></span><span id="place" class="place"></span></div>
+      <div id="scene" class="scene"></div>
+      <div id="scene-caption" class="scene-caption"></div>
+      <div id="celebration" class="celebration" aria-hidden="true"></div>
+    </section>
+
+    <section class="story-panel" aria-labelledby="page-title">
+      <div class="panel-kicker"><span id="chapter-label"></span><span id="step-dots" class="step-dots" aria-label="Questions on this page"></span></div>
+      <h1 id="page-title" tabindex="-1"></h1>
+      <div id="dialogue" class="dialogue"></div>
+      <div class="task-area">
+        <h2 id="question" tabindex="-1"></h2>
+        <p id="instruction" class="instruction"></p>
+        <div id="choices" class="choices"></div>
+        <div id="feedback" class="feedback" role="status" aria-live="polite" aria-atomic="true"></div>
+        <div id="reveal" class="reveal"></div>
+      </div>
+    </section>
+  </main>
+
+  <aside class="clue-ribbon" aria-label="Clues about Mummy">
+    <span class="clue-label">My mummy…</span><div id="clues" class="clues"></div>
+  </aside>
+
+  <footer class="book-footer">
+    <button id="back" class="back-button" type="button">← Back</button>
+    <div class="page-progress"><span id="page-number"></span><div class="progress-track" aria-hidden="true"><span id="progress-bar"></span></div></div>
+    <button id="next" class="next-button" type="button" disabled>Choose an answer <span aria-hidden="true">→</span></button>
+  </footer>
+
+  <dialog id="teacher-dialog" aria-labelledby="teacher-title">
+    <div class="modal-head"><h2 id="teacher-title">Teacher’s corner</h2><button type="button" class="close-button" data-close aria-label="Close teacher notes">×</button></div>
+    <p class="modal-intro">Интерактивная история для начальной школы · A1 · примерно 15–25 минут.</p>
+    <p>Читайте реплики по ролям. Перед кликом попросите ребёнка произнести вопрос или ответ целиком. На каждой странице есть выбор; ошибочный ответ даёт подсказку и позволяет попробовать ещё раз.</p>
+    <p><strong>Язык:</strong> Have you got…? / Yes, I have. · Are you…? / Yes, I am. · Can you…? / Yes, I can. / No, I can’t. · She has got… · She hasn’t got any legs. · colours, animals, rooms, in / next to.</p>
+    <p><strong>Кнопка динамика</strong> читает текст текущего шага и варианты ответа, если в браузере доступна английская озвучка. Без озвучки игра работает полностью. Прогресс сохраняется на этом устройстве, если браузер разрешает сохранение.</p>
+    <p><strong>Управление:</strong> мышь или касание; с клавиатуры — Tab и Enter / пробел. Стрелки ← → перелистывают доступные шаги вне кнопок. Полноэкранный режим зависит от браузера.</p>
+    <h3>Открыть страницу</h3>
+    <p class="muted">Для учителя: можно перейти к любой встрече.</p>
+    <div id="page-map" class="page-map"></div>
+    <div class="modal-actions"><button id="restart" type="button" class="secondary-button">Начать историю заново</button><button class="secondary-button" data-close type="button">Вернуться к игре</button></div>
+  </dialog>
+  <dialog id="restart-dialog" aria-labelledby="restart-title">
+    <div class="modal-head"><h2 id="restart-title">Start again?</h2><button type="button" class="close-button" data-close aria-label="Close">×</button></div>
+    <p>Начать сначала и очистить сохранённый прогресс этой игры?</p>
+    <div class="modal-actions"><button class="secondary-button" data-close type="button">Продолжить историю</button><button id="confirm-restart" class="next-button" type="button">Да, начать сначала</button></div>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <noscript><div class="noscript">Please enable JavaScript to play this story.</div></noscript>
+</body>
+</html>
