@@ -1,7 +1,7 @@
 (() => {
   'use strict';
   const story = window.MUMMY_STORY;
-  const STORE = 'shkoala-mummy-story-v3';
+  const STORE = 'shkoala-mummy-story-v4';
   const $ = id => document.getElementById(id);
   const fresh = () => ({ version: story.version, page: 0, steps: {}, solved: [], drafts: {}, frames: {}, read: {} });
   let progress = load();
@@ -12,6 +12,8 @@
   let speaking = false;
   let speechSession = 0;
   let celebrated = '';
+  let preparing = false;
+  const imageJobs = new Map();
   const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const paths = {
     listen: '<path d="M4 9v6h4l5 4V5L8 9H4Z"/><path d="M17 8a6 6 0 0 1 0 8M20 5a10 10 0 0 1 0 14"/>',
@@ -32,6 +34,33 @@
   const picture = (name, cls = '', alt = '') => {
     const img = node('img', cls); img.src = asset(name); img.alt = alt; img.draggable = false; img.decoding = 'async'; return img;
   };
+  function preloadPicture(name) {
+    if (imageJobs.has(name)) return imageJobs.get(name);
+    const job = new Promise(resolve => {
+      const img = new Image();
+      img.onload = async () => { try { await img.decode(); } catch (_) {} resolve(true); };
+      img.onerror = () => { imageJobs.delete(name); resolve(false); };
+      img.src = asset(name);
+    });
+    imageJobs.set(name, job); return job;
+  }
+  function preloadScene(p) {
+    const names = new Set([p.background, 'little-ghost']);
+    const actors = { spider: ['spider-eight.webp'], frog: ['frog'], cat: ['cat', 'cat-body'], owl: ['owl-perched', 'owl-flap.webp'], mummy: ['mummy'] };
+    (actors[p.partner] || []).forEach(name => names.add(name));
+    if (p.scene === 'homeward' || p.scene === 'house') names.add('house');
+    p.steps.forEach(s => s.choices.forEach(c => { if (c.image) names.add(c.image); if (c.room) names.add('house'); }));
+    return Promise.all([...names].map(preloadPicture)).then(results => results.every(Boolean));
+  }
+  async function preparePage(p) {
+    preparing = true; updateNav(); $('main').setAttribute('aria-busy', 'true');
+    try {
+      if (await preloadScene(p)) return true;
+      toast('A picture could not load. Please try again.'); return false;
+    } finally {
+      preparing = false; updateNav(); $('main').removeAttribute('aria-busy');
+    }
+  }
   const icon = name => {
     const eyes = colour => `<path d="M2 20C8 4 21 4 27 20c-6 13-19 13-25 0Zm35 0C43 4 56 4 62 20c-6 13-19 13-25 0Z" fill="#fff" stroke="#a78c79" stroke-width="1.5"/><circle cx="14.5" cy="19" r="9" fill="${colour}"/><circle cx="49.5" cy="19" r="9" fill="${colour}"/><circle cx="14.5" cy="19" r="5" fill="#302827"/><circle cx="49.5" cy="19" r="5" fill="#302827"/><circle cx="17" cy="16" r="2.5" fill="#fff"/><circle cx="52" cy="16" r="2.5" fill="#fff"/>`;
     const legs = count => Array.from({ length: count }, (_, i) => `<path d="M${12 + i * (40 / Math.max(1, count - 1))} 8v23h-7" fill="none" stroke="#ad895b" stroke-width="5" stroke-linecap="round"/>`).join('');
@@ -78,6 +107,7 @@
   const frame = () => progress.frames[key()] || 0;
   const opening = () => !solved() && (progress.read[key()] || 0) < (step().opening?.length || 0);
   const draft = () => progress.drafts[key()] || [];
+  const motionBlocksNext = () => ['ghost-leave', 'ghost-home', 'ghost-approach', 'room-glow', 'reunite', 'owl-flight', 'owl-enter', 'frog-enter', 'frog-hop'].includes($('scene').dataset.motion);
   const currentLines = () => opening() ? step().opening[progress.read[key()] || 0] : solved() && !step().autoAdvance ? step().after[frame()] : step().before;
 
   function toast(text) {
@@ -122,7 +152,7 @@
     if (name === 'cat') a.append(catPuppet());
     else if (name === 'owl') a.append(picture('owl-perched', 'owl-rest', 'White owl with two legs'), owlPuppet());
     else if (name === 'frog') a.append(picture('frog', 'frog-idle', 'Frog'));
-    else a.append(picture(name === 'ghost' ? 'little-ghost' : name === 'spider' ? 'spider-eight.webp' : name, '', story.speakers[name]?.name || name));
+    else a.append(picture(name === 'ghost' ? 'little-ghost' : name === 'spider' ? 'spider-eight.webp' : name, '', name === 'mummy' && page().scene !== 'ending' ? 'A white ghost with brown eyes' : story.speakers[name]?.name || name));
     return a;
   }
   function drawScene() {
@@ -130,6 +160,7 @@
     const p = page(), scene = $('scene');
     scene.closest('.illustration').dataset.scene = p.scene;
     scene.className = `scene scene-${p.scene}`;
+    scene.dataset.motion = '';
     const world = node('div', 'world');
     if (p.scene === 'house') world.append(markup('<svg class="house-picture" viewBox="0 0 1536 1024" role="img" aria-label="A large house with four rooms"><image href="assets/house.png" width="1536" height="1024"/><rect class="room-highlight" x="100" y="545" width="610" height="345" rx="18"/></svg>'));
     else world.append(picture(p.background, 'environment', p.place));
@@ -139,9 +170,9 @@
       if (['frog', 'cat', 'mummy'].includes(p.partner)) world.append(node('div', `ground-shadow ${p.partner}-shadow`));
       world.append(actor(p.partner));
     }
-    if (['reunion', 'ending'].includes(p.scene)) for (let i = 0; i < 3; i++) world.append(node('span', 'love-heart', '♥'));
+    if (['reunion', 'ending'].includes(p.scene)) for (let i = 0; i < 3; i++) { const heart = node('span', 'love-heart', '♥'); heart.setAttribute('aria-hidden', 'true'); world.append(heart); }
     const replay = node('button', 'replay-motion'); replay.type = 'button'; replay.id = 'replay-motion'; replay.title = 'Replay movement'; replay.setAttribute('aria-label', 'Replay movement'); replay.innerHTML = svg('replay');
-    replay.addEventListener('click', () => playMotion(p.partner === 'cat' ? 'cat-tail' : p.partner === 'owl' && solved() && step().motion === 'owl-flight' ? 'owl-flight' : p.enter || (p.partner === 'mummy' ? 'mummy-float' : 'ghost-leave')));
+    replay.addEventListener('click', () => playMotion(p.partner === 'cat' ? 'cat-tail' : p.partner === 'frog' ? 'frog-hop' : p.partner === 'owl' ? 'owl-flight' : p.partner === 'mummy' ? 'mummy-float' : p.scene === 'house' && solved() ? 'room-glow' : 'ghost-hover'));
     scene.replaceChildren(world, replay);
     mounted = p.id;
     if (p.scene === 'ending') scene.classList.add('is-reunited');
@@ -153,15 +184,20 @@
     scene.classList.remove('is-hopping', 'frog-entering');
     const frog = scene.querySelector('.actor-frog'), owl = scene.querySelector('.actor-owl'), ghost = scene.querySelector('.actor-ghost'), mummy = scene.querySelector('.actor-mummy');
     owl?.classList.remove('is-flying', 'fly-enter', 'fly-circle');
-    ghost?.classList.remove('leaving', 'going-home', 'approaching'); mummy?.classList.remove('rising');
+    ghost?.classList.remove('leaving', 'going-home', 'approaching', 'hovering', 'entering-house');
+    if (name !== 'reunite') mummy?.classList.remove('rising');
     scene.dataset.motion = name || '';
     if (reduced()) {
       if (name === 'reunite') scene.classList.add('is-reunited');
-      if (name === 'ghost-home') scene.classList.add('home-arrival', 'house-passed');
+      if (name === 'ghost-leave') scene.classList.add('ghost-departed');
+      if (name === 'ghost-approach') scene.classList.add('ghost-near-mummy');
+      if (name === 'ghost-home') scene.classList.add('home-arrival', 'home-arrived');
       if (name === 'room-glow') scene.classList.add('room-chosen');
+      scene.dataset.motion = ''; updateNav();
       return;
     }
     void scene.offsetWidth;
+    const replay = $('replay-motion'); if (replay) replay.disabled = true;
     let duration = 1600;
     if (name === 'frog-enter' && frog) { scene.classList.add('frog-entering'); duration = 1500; }
     else if (name === 'frog-hop' && frog) { scene.classList.add('is-hopping'); duration = 950; }
@@ -170,15 +206,21 @@
       const tail = scene.querySelector('.cat-tail');
       if (tail) { tail.style.animation = 'none'; void tail.getBoundingClientRect(); tail.style.animation = ''; }
     } else if (name === 'ghost-leave') ghost?.classList.add('leaving');
-    else if (name === 'ghost-home') { scene.classList.remove('house-passed'); scene.classList.add('home-arrival'); ghost?.classList.add('going-home'); duration = 2150; }
+    else if (name === 'ghost-hover') ghost?.classList.add('hovering');
+    else if (name === 'ghost-home') { scene.classList.remove('home-arrived'); scene.classList.add('home-arrival'); ghost?.classList.add('going-home'); duration = 2150; }
     else if (name === 'ghost-approach') ghost?.classList.add('approaching');
     else if (name === 'mummy-float') { mummy?.classList.add('rising'); duration = 1850; }
-    else if (name === 'room-glow') scene.classList.add('room-chosen');
+    else if (name === 'room-glow') { scene.classList.add('room-chosen'); ghost?.classList.add('entering-house'); duration = 1650; }
     else if (name === 'reunite') scene.classList.add('is-reunited');
+    updateNav();
     motionTimer = setTimeout(() => {
       scene.classList.remove('is-hopping', 'frog-entering'); owl?.classList.remove('is-flying', 'fly-enter', 'fly-circle'); mummy?.classList.remove('rising');
-      if (name === 'ghost-home') scene.classList.add('house-passed');
+      ghost?.classList.remove('hovering'); if (replay) replay.disabled = false;
+      if (name === 'ghost-home') { ghost?.classList.remove('going-home'); scene.classList.add('home-arrived'); }
+      if (name === 'ghost-leave') { ghost?.classList.remove('leaving'); scene.classList.add('ghost-departed'); }
+      if (name === 'ghost-approach') { ghost?.classList.remove('approaching'); scene.classList.add('ghost-near-mummy'); }
       scene.dataset.motion = '';
+      updateNav();
     }, duration);
   }
   function drawDialogue() {
@@ -275,8 +317,13 @@
     $('feedback').className = 'feedback'; $('feedback').textContent = '';
   }
   function drawClues() {
-    const known = new Set(progress.drafts['spider:0'] || []);
-    story.pages.forEach((p, pi) => p.steps.forEach((s, si) => { if (s.unlock && (progress.solved.includes(`${p.id}:${si}`) || pi < progress.page)) s.unlock.forEach(id => known.add(id)); }));
+    const known = new Set();
+    story.pages.forEach((p, pi) => p.steps.forEach((s, si) => {
+      if (pi > progress.page || (pi === progress.page && si > index()) || !s.unlock) return;
+      const k = `${p.id}:${si}`;
+      if (progress.solved.includes(k)) s.unlock.forEach(id => known.add(id));
+      else if (s.mode === 'multi') (progress.drafts[k] || []).filter(id => s.unlock.includes(id)).forEach(id => known.add(id));
+    }));
     $('clues').replaceChildren(...story.clues.map(c => {
       const chip = node('div', known.has(c.id) ? 'clue' : 'clue locked');
       if (known.has(c.id)) { if (c.icon) chip.append(graphic(c.icon, 'mini-icon')); chip.append(document.createTextNode(c.text)); }
@@ -288,9 +335,10 @@
     const moreLines = solved() && frame() < step().after.length - 1;
     const final = progress.page === story.pages.length - 1 && index() === page().steps.length - 1;
     const text = opening() || moreLines ? 'Read on' : !solved() ? 'Choose an answer' : final ? 'Play again' : 'Next';
-    $('next').disabled = !opening() && !solved();
+    $('next').disabled = preparing || motionBlocksNext() || (!opening() && !solved());
     $('next').replaceChildren(document.createTextNode(text), node('span', '', final && solved() ? '↻' : '→')); $('next').lastChild.setAttribute('aria-hidden', 'true');
-    $('back').disabled = progress.page === 0 && index() === 0 && !frame();
+    $('back').disabled = preparing || (progress.page === 0 && index() === 0 && !frame());
+    $('teacher').disabled = preparing;
   }
   function render(options = {}) {
     clearTimeout(answerTimer);
@@ -299,7 +347,9 @@
     const sceneChanged = mounted !== p.id;
     if (sceneChanged) drawScene();
     $('scene').dataset.step = String(index()); $('scene').dataset.phase = opening() ? 'opening' : solved() ? 'after' : 'question';
-    if (p.scene === 'homeward' && solved()) $('scene').classList.add('home-arrival', 'house-passed');
+    if (p.scene === 'homeward' && solved() && sceneChanged) $('scene').classList.add('home-arrival', 'home-arrived');
+    if (p.scene === 'intro' && solved() && sceneChanged) $('scene').classList.add('ghost-departed');
+    if (p.scene === 'find-mummy' && solved() && sceneChanged) $('scene').classList.add('ghost-near-mummy');
     if (p.scene === 'house') $('scene').classList.toggle('room-chosen', solved());
     if (p.scene === 'reunion') $('scene').classList.toggle('is-reunited', progress.solved.includes('reunion:4'));
     $('place').textContent = p.place;
@@ -317,6 +367,7 @@
     if (s.celebrate && solved() && celebrated !== key()) celebrate();
     if (!s.celebrate) $('celebration').replaceChildren();
     save();
+    if (sceneChanged && story.pages[progress.page + 1]) void preloadScene(story.pages[progress.page + 1]);
   }
   function showHint(text, button) {
     if (button) { button.classList.remove('wrong'); void button.offsetWidth; button.classList.add('wrong'); setTimeout(() => button.classList.remove('wrong'), 1100); }
@@ -357,7 +408,8 @@
     if (window.matchMedia('(max-width: 760px)').matches) $('main').scrollIntoView({ behavior: 'smooth', block: 'start' });
     if (s.motion || s.motionAt?.[0]) playMotion(s.motion || s.motionAt[0]);
   }
-  function next() {
+  async function next() {
+    if (preparing || motionBlocksNext()) return;
     clearTimeout(answerTimer);
     stopSpeech();
     if (opening()) { progress.read[key()] = (progress.read[key()] || 0) + 1; render(); return; }
@@ -367,11 +419,15 @@
       if (step().motionAt?.[frame()]) playMotion(step().motionAt[frame()]); return;
     }
     if (index() < page().steps.length - 1) progress.steps[page().id] = index() + 1;
-    else if (progress.page < story.pages.length - 1) progress.page++;
+    else if (progress.page < story.pages.length - 1) {
+      if (!await preparePage(story.pages[progress.page + 1])) return;
+      progress.page++;
+    }
     else { $('restart-dialog').showModal(); return; }
     render({ navigate: true });
   }
   function back() {
+    if (preparing) return;
     clearTimeout(answerTimer);
     stopSpeech();
     if (solved() && frame() > 0) { progress.frames[key()] = frame() - 1; render(); return; }
@@ -384,10 +440,15 @@
   function drawMap() {
     $('page-map').replaceChildren(...story.pages.map((p, i) => {
       const b = node('button', i === progress.page ? 'active' : '', `${String(i + 1).padStart(2, '0')}  ${p.title}`); b.type = 'button';
-      b.addEventListener('click', () => {
-        stopSpeech(); progress.page = i; progress.steps[p.id] = 0;
-        progress.solved = progress.solved.filter(k => !k.startsWith(`${p.id}:`));
-        for (const field of ['drafts', 'frames', 'read']) Object.keys(progress[field]).filter(k => k.startsWith(`${p.id}:`)).forEach(k => delete progress[field][k]);
+      b.addEventListener('click', async () => {
+        if (preparing) return;
+        clearTimeout(answerTimer); stopSpeech();
+        if (!await preparePage(p)) return;
+        const resetIds = story.pages.slice(i).map(item => item.id);
+        progress.page = i;
+        resetIds.forEach(id => { progress.steps[id] = 0; });
+        progress.solved = progress.solved.filter(k => !resetIds.includes(k.split(':')[0]));
+        for (const field of ['drafts', 'frames', 'read']) Object.keys(progress[field]).filter(k => resetIds.includes(k.split(':')[0])).forEach(k => delete progress[field][k]);
         mounted = ''; $('teacher-dialog').close(); render({ navigate: true });
       }); return b;
     }));
@@ -417,6 +478,5 @@
     if (e.key === 'ArrowLeft') { e.preventDefault(); back(); }
   });
   window.addEventListener('pagehide', stopSpeech);
-  render();
-  ['cat', 'cat-body', 'frog', 'frog-jump', 'owl-perched', 'owl-flap.webp', 'mummy', 'little-ghost', 'spider-eight.webp', 'forest-wide.webp', 'spider-forest.webp', 'courtyard-wide.webp', 'owl-garden.webp', 'pond-wide.webp', 'house', 'living-room'].forEach(name => { const img = new Image(); img.src = asset(name); });
+  preloadScene(page()).then(ready => { render(); if (!ready) toast('Some pictures could not load. Please reload the page.'); });
 })();

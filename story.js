@@ -8,7 +8,7 @@ window.MUMMY_STORY = (() => {
   const colours = () => [choice('green', 'Are you green?'), choice('white', 'Are you white?'), choice('black', 'Are you black?')];
   const abilities = () => [choice('jump', 'Can you jump?'), choice('fly', 'Can you fly?'), choice('swim', 'Can you swim?')];
   return {
-    version: 3,
+    version: 4,
     speakers: {
       ghost: { name: 'Little Ghost', colour: 'lilac' }, spider: { name: 'Spider', colour: 'sage' },
       frog: { name: 'Frog', colour: 'sage' }, cat: { name: 'Cat', colour: 'sage' }, owl: { name: 'Owl', colour: 'sage' },
@@ -32,29 +32,29 @@ window.MUMMY_STORY = (() => {
       {
         id: 'spider', title: 'Meet Spider', place: 'Next to the spider’s web', scene: 'spider', background: 'spider-forest.webp', partner: 'spider',
         steps: [{
-          before: [say('ghost', 'Are you my mummy?'), say('spider', 'No, but I know your mummy.'), say('spider', 'She has got big brown eyes.\nShe is white.\nShe can fly.')],
+          before: [say('ghost', 'Are you my mummy?'), say('spider', 'No. I’m a spider. I know your mummy.'), say('spider', 'She has got big brown eyes.\nShe is white.\nShe can fly.')],
           prompt: 'Choose 3 clues.', instruction: '', mode: 'multi', correct: ['eyes', 'white', 'fly'],
           choices: [choice('blue', 'big blue eyes', { icon: 'blue-eyes', pictureOnly: true }), choice('white', 'white', { icon: 'white', pictureOnly: true }), choice('swim', 'swim'), choice('eyes', 'big brown eyes', { icon: 'eyes', pictureOnly: true }), choice('fly', 'fly'), choice('green', 'green', { icon: 'green', pictureOnly: true })],
           hint: 'Look at Spider’s clues again.', success: 'Three clues found!', unlock: ['eyes', 'white', 'fly'],
-          after: [[say('ghost', 'Thank you, little Spider!')]]
+          after: [[say('ghost', 'Thank you, little Spider!\nLet’s follow the path.')]]
         }]
       },
       {
         id: 'frog', title: 'Meet Frog', place: 'By the pond', scene: 'frog', background: 'pond-wide.webp', partner: 'frog', enter: 'frog-enter',
         steps: [
           {
-            before: [say('frog', 'Hello, little ghost!'), say('ghost', 'Hello!')],
+            before: [say('frog', 'Hello! I’m a frog.'), say('ghost', 'Hello!')],
             prompt: 'Make the question.', instruction: 'Click the words in order.', mode: 'builder', correct: ['have', 'you', 'got', 'big', 'brown', 'eyes'],
             choices: [choice('brown', 'brown'), choice('got', 'got'), choice('eyes', 'eyes?'), choice('have', 'Have'), choice('big', 'big'), choice('you', 'you')],
             hint: 'Try again. Start with “Have you got…”', success: 'A perfect question!',
             after: [[say('ghost', 'Have you got big brown eyes?'), say('frog', 'Yes, I have.\nI have got brown eyes.')]]
           },
           {
-            before: [say('ghost', 'Are you my mummy?')],
+            before: [say('ghost', 'My mummy is white.\nAre you my mummy?')],
             prompt: 'Choose Frog’s answer.', instruction: 'Look at her colour.', mode: 'single', correct: ['no'],
             choices: [choice('yes', 'Yes, I am.'), choice('no', 'No, I’m not.')],
             hint: 'Mummy is white. The frog is green.', success: 'She is a frog!',
-            after: [[say('frog', 'No, I’m not. Your mummy is white.\nI am not white. I am green.\nI am a frog.')], [say('ghost', 'Goodbye, Frog!')]], motionAt: { 1: 'frog-hop' }
+            after: [[say('frog', 'No, I’m not. Your mummy is white.\nI am not white. I am green.')], [say('ghost', 'Goodbye, Frog!\nLet’s look by the gate.')]], motionAt: { 1: 'frog-hop' }
           }
         ]
       },
@@ -62,7 +62,7 @@ window.MUMMY_STORY = (() => {
         id: 'cat', title: 'Meet Cat', place: 'In the courtyard', scene: 'cat', background: 'courtyard-wide.webp', partner: 'cat',
         steps: [
           {
-            before: [say('cat', 'Hello, little ghost!'), say('ghost', 'Hello!\nHave you got big brown eyes?')],
+            before: [say('cat', 'Hello! I’m a cat.'), say('ghost', 'Hello!\nHave you got big brown eyes?')],
             prompt: 'Answer for Cat.', instruction: 'Choose her answer.', mode: 'single', correct: ['have'], choices: yes(),
             hint: 'Have you got…? — Yes, I have.', success: 'Big brown eyes — yes!',
             autoAdvance: true, after: []
@@ -75,7 +75,7 @@ window.MUMMY_STORY = (() => {
           {
             before: [say('ghost', 'Can you fly?')], prompt: 'Answer for Cat.', instruction: 'Choose her answer.', mode: 'single', correct: ['can'], choices: no(),
             hint: 'The cat can’t fly. Choose “No, I can’t.”', success: 'Mummy can fly. Cat can’t.',
-            after: [[say('ghost', 'Oh, you aren’t my mummy.\nMy mummy can fly.'), say('cat', 'Ha-ha! I am a cat.')], [say('ghost', 'Goodbye, Cat!')]]
+            after: [[say('ghost', 'Oh, you aren’t my mummy.\nMy mummy can fly.'), say('cat', 'Ha-ha! I am a cat.')], [say('ghost', 'Goodbye, Cat!\nLet’s look by the tree.')]]
           }
         ]
       },
@@ -83,7 +83,7 @@ window.MUMMY_STORY = (() => {
         id: 'owl', title: 'Meet Owl', place: 'Next to the tree', scene: 'owl', background: 'owl-garden.webp', partner: 'owl', enter: 'owl-enter',
         steps: [
           {
-            before: [say('owl', 'Hello, little ghost!'), say('ghost', 'Hello!')],
+            before: [say('owl', 'Hello! I’m an owl.\nI know your mummy.'), say('ghost', 'Hello!')],
             prompt: 'Ask about her 👀.', instruction: 'Choose the question.', mode: 'single', correct: ['brown'], choices: eyes(),
             hint: 'Mummy has got big brown eyes.', success: 'Big brown eyes — yes!',
             after: [[say('ghost', 'Have you got big brown eyes?'), say('owl', 'Yes, I have.\nI have got brown eyes.')]]
@@ -103,7 +103,7 @@ window.MUMMY_STORY = (() => {
             prompt: 'Choose the new clue.', instruction: 'My mummy has got…', mode: 'single', correct: ['none'],
             choices: [choice('two', 'two legs', { icon: 'two-legs' }), choice('four', 'four legs', { icon: 'four-legs' }), choice('none', 'no legs', { icon: 'no-legs' })],
             hint: 'Mummy hasn’t got any legs.', success: 'The fourth clue!', unlock: ['legs'],
-            after: [[say('ghost', 'My mummy has got no legs!')], [say('owl', 'Your mummy is at home.\nGo home, little ghost!'), say('ghost', 'Thank you, Owl!')]]
+            after: [[say('ghost', 'My mummy has got no legs!\nWhere is she?')], [say('owl', 'I can see her! She is at home.\nGo home, little ghost!'), say('ghost', 'Thank you, Owl!')]]
           }
         ]
       },
@@ -111,7 +111,7 @@ window.MUMMY_STORY = (() => {
         id: 'homeward', title: 'Let’s go home!', place: 'On the way home', scene: 'homeward', background: 'forest-wide.webp',
         steps: [{
           before: [say('ghost', 'Mummy is at home!\nLet’s go home!')], prompt: 'Where is Mummy?', instruction: 'Choose a picture.', mode: 'pictures', correct: ['house'],
-          choices: [choice('pond', 'The pond', { image: 'pond' }), choice('house', 'The house', { image: 'house' }), choice('web', 'The web', { image: 'web' })],
+          choices: [choice('pond', 'The pond', { image: 'pond-wide.webp' }), choice('house', 'The house', { image: 'house' }), choice('web', 'The web', { image: 'spider-forest.webp' })],
           hint: 'Mummy is at home. Look for the house.', success: 'Home, sweet home!', motion: 'ghost-home',
           after: [[say('ghost', 'I’m coming, Mummy!')]]
         }]
@@ -122,7 +122,7 @@ window.MUMMY_STORY = (() => {
           before: [say('ghost', 'Mummy! Where are you?'), say('voice', 'I’m in the living room!')], prompt: 'Choose the room.', instruction: 'Where is Mummy?', mode: 'pictures', correct: ['living'],
           choices: [choice('bedroom', 'bedroom', { room: 'bedroom' }), choice('bathroom', 'bathroom', { room: 'bathroom' }), choice('living', 'living room', { room: 'living' }), choice('kitchen', 'kitchen', { room: 'kitchen' })],
           hint: 'The living room has got a sofa.', success: 'The living room!', motion: 'room-glow',
-          after: [[say('ghost', 'Here I come!')]]
+          after: [[say('ghost', 'Is that my mummy?\nHere I come!')]]
         }]
       },
       {
@@ -135,30 +135,30 @@ window.MUMMY_STORY = (() => {
         }]
       },
       {
-        id: 'reunion', title: 'My mummy!', place: 'In the living room', scene: 'reunion', background: 'living-room', partner: 'mummy',
+        id: 'reunion', title: 'A white ghost', place: 'In the living room', scene: 'reunion', background: 'living-room', partner: 'mummy',
         steps: [
           {
-            before: [say('ghost', 'Have you got big brown eyes?')], prompt: 'Answer for Mummy.', instruction: 'Choose her answer.', mode: 'single', correct: ['have'], choices: yes(),
+            before: [say('ghost', 'Have you got big brown eyes?')], prompt: 'Choose her answer.', instruction: '', mode: 'single', correct: ['have'], choices: yes(),
             hint: 'Have you got…? — Yes, I have.', success: 'Big brown eyes — yes!',
             autoAdvance: true, after: []
           },
           {
-            before: [say('ghost', 'Are you white?')], prompt: 'Answer for Mummy.', instruction: 'Choose her answer.', mode: 'single', correct: ['am'], choices: yes(),
+            before: [say('ghost', 'Are you white?')], prompt: 'Choose her answer.', instruction: '', mode: 'single', correct: ['am'], choices: yes(),
             hint: 'Are you…? — Yes, I am.', success: 'White — yes!',
             autoAdvance: true, after: []
           },
           {
-            before: [say('ghost', 'Can you fly?')], prompt: 'Answer for Mummy.', instruction: 'Choose her answer.', mode: 'single', correct: ['can'], choices: yes(),
+            before: [say('ghost', 'Can you fly?')], prompt: 'Choose her answer.', instruction: '', mode: 'single', correct: ['can'], choices: yes(),
             hint: 'Can you…? — Yes, I can.', success: 'She can fly!', motion: 'mummy-float',
             autoAdvance: true, after: []
           },
           {
-            before: [say('ghost', 'Have you got any legs?')], prompt: 'Answer for Mummy.', instruction: 'Choose her answer.', mode: 'single', correct: ['have'], choices: no(),
+            before: [say('ghost', 'Have you got any legs?')], prompt: 'Choose her answer.', instruction: '', mode: 'single', correct: ['have'], choices: no(),
             hint: 'Have you got…? — No, I haven’t.', success: 'No legs!',
             autoAdvance: true, after: []
           },
           {
-            before: [say('ghost', 'Are you my mummy?')], prompt: 'Answer for Mummy.', instruction: 'Choose her answer.', mode: 'single', correct: ['yes'],
+            before: [say('ghost', 'Are you my mummy?')], prompt: 'Choose her answer.', instruction: '', mode: 'single', correct: ['yes'],
             choices: [choice('no', 'No, I’m not.'), choice('yes', 'Yes, I am!')],
             hint: 'All four clues match. This is Mummy!', success: 'Together at last!', motion: 'reunite',
             after: [[say('ghost', 'I love you, Mummy!'), say('mummy', 'I love you, too!')]]
