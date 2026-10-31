@@ -7,9 +7,10 @@
   <meta name="description" content="Help a little ghost find his mummy. A gentle, interactive English story with a choice on every page.">
   <title>Are you my mummy? · ШКОАЛА</title>
   <link rel="icon" href="assets/little-ghost.png" type="image/png">
-  <link rel="stylesheet" href="styles.css">
-  <script src="story.js" defer></script>
-  <script src="app.js" defer></script>
+  <link rel="preload" href="assets/fonts/ComicNeue-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="styles.css?v=2">
+  <script src="story.js?v=2" defer></script>
+  <script src="app.js?v=2" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#question">Skip to the question</a>
@@ -26,23 +27,21 @@
   </header>
 
   <main id="main" class="book">
-    <section class="illustration" aria-label="Story picture">
+    <section class="illustration" aria-label="Story picture and dialogue">
       <div class="scene-heading"><span id="chapter" class="chapter"></span><span id="place" class="place"></span></div>
+      <div id="dialogue" class="dialogue" aria-label="Character dialogue" aria-live="polite"></div>
       <div id="scene" class="scene"></div>
-      <div id="scene-caption" class="scene-caption"></div>
       <div id="celebration" class="celebration" aria-hidden="true"></div>
     </section>
 
     <section class="story-panel" aria-labelledby="page-title">
       <div class="panel-kicker"><span id="chapter-label"></span><span id="step-dots" class="step-dots" aria-label="Questions on this page"></span></div>
-      <h1 id="page-title" tabindex="-1"></h1>
-      <div id="dialogue" class="dialogue"></div>
+      <div id="page-title" class="page-title"></div>
       <div class="task-area">
-        <h2 id="question" tabindex="-1"></h2>
+        <h1 id="question" tabindex="-1"></h1>
         <p id="instruction" class="instruction"></p>
         <div id="choices" class="choices"></div>
         <div id="feedback" class="feedback" role="status" aria-live="polite" aria-atomic="true"></div>
-        <div id="reveal" class="reveal"></div>
       </div>
     </section>
   </main>
@@ -59,13 +58,14 @@
 
   <dialog id="teacher-dialog" aria-labelledby="teacher-title">
     <div class="modal-head"><h2 id="teacher-title">Teacher’s corner</h2><button type="button" class="close-button" data-close aria-label="Close teacher notes">×</button></div>
-    <p class="modal-intro">Интерактивная история для начальной школы · A1 · примерно 15–25 минут.</p>
-    <p>Читайте реплики по ролям. Перед кликом попросите ребёнка произнести вопрос или ответ целиком. На каждой странице есть выбор; ошибочный ответ даёт подсказку и позволяет попробовать ещё раз.</p>
+    <p class="modal-intro">Интерактивная история для начальной школы · A1 · 10 сцен.</p>
+    <p>Все диалоги находятся в облачках слева, задания — справа. Перед кликом попросите ребёнка произнести выбранную фразу. «Read on» показывает следующую реплику; переход к новому заданию открывается после правильного ответа.</p>
+    <p><strong>Паучок:</strong> выбрать 3 картинки из 6. <strong>Лягушка:</strong> собрать вопрос из слов и нажать Check. Нажатие на собранное слово возвращает его в набор. <strong>Кошка:</strong> выбрать её ответы. <strong>Сова:</strong> выбрать вопросы и четвёртую примету. <strong>Мама:</strong> выбрать краткие ответы. <strong>Финал:</strong> выбрать друзей по порядку.</p>
     <p><strong>Язык:</strong> Have you got…? / Yes, I have. · Are you…? / Yes, I am. · Can you…? / Yes, I can. / No, I can’t. · She has got… · She hasn’t got any legs. · colours, animals, rooms, in / next to.</p>
     <p><strong>Кнопка динамика</strong> читает текст текущего шага и варианты ответа, если в браузере доступна английская озвучка. Без озвучки игра работает полностью. Прогресс сохраняется на этом устройстве, если браузер разрешает сохранение.</p>
     <p><strong>Управление:</strong> мышь или касание; с клавиатуры — Tab и Enter / пробел. Стрелки ← → перелистывают доступные шаги вне кнопок. Полноэкранный режим зависит от браузера.</p>
     <h3>Открыть страницу</h3>
-    <p class="muted">Для учителя: можно перейти к любой встрече.</p>
+    <p class="muted">Для учителя: выбранная сцена начнётся заново; остальные сцены сохранят свой прогресс.</p>
     <div id="page-map" class="page-map"></div>
     <div class="modal-actions"><button id="restart" type="button" class="secondary-button">Начать историю заново</button><button class="secondary-button" data-close type="button">Вернуться к игре</button></div>
   </dialog>
