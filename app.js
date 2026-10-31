@@ -1,7 +1,7 @@
 (() => {
   'use strict';
   const story = window.MUMMY_STORY;
-  const STORE = 'shkoala-mummy-story-v4';
+  const STORE = 'shkoala-mummy-story-v5';
   const $ = id => document.getElementById(id);
   const fresh = () => ({ version: story.version, page: 0, steps: {}, solved: [], drafts: {}, frames: {}, read: {} });
   let progress = load();
@@ -65,9 +65,15 @@
     const eyes = colour => `<path d="M2 20C8 4 21 4 27 20c-6 13-19 13-25 0Zm35 0C43 4 56 4 62 20c-6 13-19 13-25 0Z" fill="#fff" stroke="#a78c79" stroke-width="1.5"/><circle cx="14.5" cy="19" r="9" fill="${colour}"/><circle cx="49.5" cy="19" r="9" fill="${colour}"/><circle cx="14.5" cy="19" r="5" fill="#302827"/><circle cx="49.5" cy="19" r="5" fill="#302827"/><circle cx="17" cy="16" r="2.5" fill="#fff"/><circle cx="52" cy="16" r="2.5" fill="#fff"/>`;
     const legs = count => Array.from({ length: count }, (_, i) => `<path d="M${12 + i * (40 / Math.max(1, count - 1))} 8v23h-7" fill="none" stroke="#ad895b" stroke-width="5" stroke-linecap="round"/>`).join('');
     const items = {
-      eyes: eyes('#8d5635'), 'blue-eyes': eyes('#7a9fcb'),
+      eyes: eyes('#8d5635'), 'blue-eyes': eyes('#4b8acb'), 'green-eyes': eyes('#70a347'),
+      'purple-eyes': eyes('#9664c2'), 'grey-eyes': eyes('#8c8c8c'),
+      'small-eyes': `<g transform="translate(12.16 7.6) scale(.62)">${eyes('#8d5635')}</g>`,
       white: '<circle cx="32" cy="20" r="17" fill="#fff" stroke="#ae9dbd" stroke-width="2"/>',
       green: '<circle cx="32" cy="20" r="17" fill="#82ac57" stroke="#638c3e" stroke-width="2"/>',
+      blue: '<circle cx="32" cy="20" r="17" fill="#4b8acb" stroke="#35699f" stroke-width="2"/>',
+      black: '<circle cx="32" cy="20" r="17" fill="#333039" stroke="#211e28" stroke-width="2"/>',
+      orange: '<circle cx="32" cy="20" r="17" fill="#ed9939" stroke="#c37720" stroke-width="2"/>',
+      purple: '<circle cx="32" cy="20" r="17" fill="#9664c2" stroke="#7646a0" stroke-width="2"/>',
       'no-legs': '<path d="M17 35V18a15 15 0 0 1 30 0v17l-5-4-5 4-5-4-5 4-5-4-5 4Z" fill="#fff" stroke="#aa99bc" stroke-width="1.8"/><circle cx="27" cy="17" r="3" fill="#885334"/><circle cx="38" cy="17" r="3" fill="#885334"/><path d="M28 25q5 5 10 0" fill="none" stroke="#885334" stroke-width="1.5"/>',
       'two-legs': legs(2), 'four-legs': legs(4),
       water: '<path d="M2 15q6-8 12 0t12 0t12 0t12 0t12 0M2 29q6-8 12 0t12 0t12 0t12 0t12 0" fill="none" stroke="#648da8" stroke-width="3" stroke-linecap="round"/>'
@@ -250,7 +256,7 @@
   function selectedIds() { return solved() ? step().correct : draft(); }
   function choiceButton(c, i) {
     const selected = selectedIds().includes(c.id);
-    const b = node('button', `choice${selected ? ' selected' : ''}`); b.type = 'button'; b.dataset.choice = c.id; b.setAttribute('aria-label', c.text);
+    const b = node('button', `choice${selected ? ' selected' : ''}${c.wordOnly ? ' word-only' : ''}`); b.type = 'button'; b.dataset.choice = c.id; b.setAttribute('aria-label', c.text);
     b.disabled = opening() || solved() || (step().mode === 'order' && selected);
     if (step().mode === 'multi') b.setAttribute('aria-pressed', String(selected));
     if (c.pictureOnly) {
@@ -260,7 +266,7 @@
       const badge = node('span', 'letter', selected ? '✓' : String.fromCharCode(65 + i)); badge.setAttribute('aria-hidden', 'true');
       b.append(badge, c.room ? roomPicture(c.room) : picture(c.image), node('span', '', c.text));
     } else if (c.icon) b.append(graphic(c.icon), node('span', '', `${selected ? '✓ ' : ''}${c.text}`));
-    else if (step().mode === 'multi') b.append(node('span', '', c.text));
+    else if (c.wordOnly || step().mode === 'multi') b.append(node('span', '', c.text));
     else {
       const badge = node('span', 'letter', selected ? '✓' : String.fromCharCode(65 + i)); badge.setAttribute('aria-hidden', 'true');
       b.append(badge, node('span', '', c.text));
@@ -296,7 +302,7 @@
   }
   function drawActivity() {
     const s = step();
-    $('choices').className = `choices ${s.mode === 'multi' ? 'clue-pictures' : s.mode === 'order' ? 'pictures order-pictures' : s.mode}${s.choices.length === 4 ? ' four' : ''}`;
+    $('choices').className = `choices ${s.pictureGrid || s.mode === 'multi' ? 'clue-pictures' : s.mode === 'order' ? 'pictures order-pictures' : s.mode}${s.choices.length === 4 ? ' four' : ''}`;
     if (s.mode === 'builder') drawBuilder();
     else {
       const buttons = s.choices.map(choiceButton);

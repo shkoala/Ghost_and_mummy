@@ -8,7 +8,7 @@ window.MUMMY_STORY = (() => {
   const colours = () => [choice('green', 'Are you green?'), choice('white', 'Are you white?'), choice('black', 'Are you black?')];
   const abilities = () => [choice('jump', 'Can you jump?'), choice('fly', 'Can you fly?'), choice('swim', 'Can you swim?')];
   return {
-    version: 4,
+    version: 5,
     speakers: {
       ghost: { name: 'Little Ghost', colour: 'lilac' }, spider: { name: 'Spider', colour: 'sage' },
       frog: { name: 'Frog', colour: 'sage' }, cat: { name: 'Cat', colour: 'sage' }, owl: { name: 'Owl', colour: 'sage' },
@@ -32,10 +32,10 @@ window.MUMMY_STORY = (() => {
       {
         id: 'spider', title: 'Meet Spider', place: 'Next to the spider’s web', scene: 'spider', background: 'spider-forest.webp', partner: 'spider',
         steps: [{
-          before: [say('ghost', 'Are you my mummy?'), say('spider', 'No. I’m a spider. I know your mummy.'), say('spider', 'She has got big brown eyes.\nShe is white.\nShe can fly.')],
-          prompt: 'Choose 3 clues.', instruction: '', mode: 'multi', correct: ['eyes', 'white', 'fly'],
-          choices: [choice('blue', 'big blue eyes', { icon: 'blue-eyes', pictureOnly: true }), choice('white', 'white', { icon: 'white', pictureOnly: true }), choice('swim', 'swim'), choice('eyes', 'big brown eyes', { icon: 'eyes', pictureOnly: true }), choice('fly', 'fly'), choice('green', 'green', { icon: 'green', pictureOnly: true })],
-          hint: 'Look at Spider’s clues again.', success: 'Three clues found!', unlock: ['eyes', 'white', 'fly'],
+          before: [say('ghost', 'Are you my mummy?'), say('spider', 'No. I’m a spider. I know your mummy.'), say('spider', 'She has got big brown eyes.')],
+          prompt: 'Choose her 👀.', instruction: '', mode: 'single', pictureGrid: true, correct: ['eyes'],
+          choices: [choice('blue', 'big blue eyes', { icon: 'blue-eyes', pictureOnly: true }), choice('green', 'big green eyes', { icon: 'green-eyes', pictureOnly: true }), choice('purple', 'big purple eyes', { icon: 'purple-eyes', pictureOnly: true }), choice('eyes', 'big brown eyes', { icon: 'eyes', pictureOnly: true }), choice('small', 'small brown eyes', { icon: 'small-eyes', pictureOnly: true }), choice('grey', 'big grey eyes', { icon: 'grey-eyes', pictureOnly: true })],
+          hint: 'She has got big brown eyes.', success: 'The first clue!', unlock: ['eyes'],
           after: [[say('ghost', 'Thank you, little Spider!\nLet’s follow the path.')]]
         }]
       },
@@ -43,18 +43,18 @@ window.MUMMY_STORY = (() => {
         id: 'frog', title: 'Meet Frog', place: 'By the pond', scene: 'frog', background: 'pond-wide.webp', partner: 'frog', enter: 'frog-enter',
         steps: [
           {
-            before: [say('frog', 'Hello! I’m a frog.'), say('ghost', 'Hello!')],
+            before: [say('frog', 'Hello! I’m a frog.\nI know your mummy.'), say('ghost', 'Hello!')],
             prompt: 'Make the question.', instruction: 'Click the words in order.', mode: 'builder', correct: ['have', 'you', 'got', 'big', 'brown', 'eyes'],
             choices: [choice('brown', 'brown'), choice('got', 'got'), choice('eyes', 'eyes?'), choice('have', 'Have'), choice('big', 'big'), choice('you', 'you')],
             hint: 'Try again. Start with “Have you got…”', success: 'A perfect question!',
             after: [[say('ghost', 'Have you got big brown eyes?'), say('frog', 'Yes, I have.\nI have got brown eyes.')]]
           },
           {
-            before: [say('ghost', 'My mummy is white.\nAre you my mummy?')],
-            prompt: 'Choose Frog’s answer.', instruction: 'Look at her colour.', mode: 'single', correct: ['no'],
-            choices: [choice('yes', 'Yes, I am.'), choice('no', 'No, I’m not.')],
-            hint: 'Mummy is white. The frog is green.', success: 'She is a frog!',
-            after: [[say('frog', 'No, I’m not. Your mummy is white.\nI am not white. I am green.')], [say('ghost', 'Goodbye, Frog!\nLet’s look by the gate.')]], motionAt: { 1: 'frog-hop' }
+            before: [say('ghost', 'Are you my mummy?'), say('frog', 'No, I’m not.\nYour mummy is white.\nI am green.')],
+            prompt: 'Choose Mummy’s colour.', instruction: '', mode: 'single', pictureGrid: true, correct: ['white'],
+            choices: [choice('green', 'green', { icon: 'green', pictureOnly: true }), choice('blue', 'blue', { icon: 'blue', pictureOnly: true }), choice('black', 'black', { icon: 'black', pictureOnly: true }), choice('white', 'white', { icon: 'white', pictureOnly: true }), choice('orange', 'orange', { icon: 'orange', pictureOnly: true }), choice('purple', 'purple', { icon: 'purple', pictureOnly: true })],
+            hint: 'Your mummy is white. Frog is green.', success: 'The second clue!', unlock: ['white'],
+            after: [[say('ghost', 'Thank you, Frog!\nLet’s look by the gate.')]], motion: 'frog-hop'
           }
         ]
       },
@@ -62,7 +62,7 @@ window.MUMMY_STORY = (() => {
         id: 'cat', title: 'Meet Cat', place: 'In the courtyard', scene: 'cat', background: 'courtyard-wide.webp', partner: 'cat',
         steps: [
           {
-            before: [say('cat', 'Hello! I’m a cat.'), say('ghost', 'Hello!\nHave you got big brown eyes?')],
+            before: [say('cat', 'Hello! I’m a cat.\nI know your mummy.'), say('ghost', 'Hello!\nHave you got big brown eyes?')],
             prompt: 'Answer for Cat.', instruction: 'Choose her answer.', mode: 'single', correct: ['have'], choices: yes(),
             hint: 'Have you got…? — Yes, I have.', success: 'Big brown eyes — yes!',
             autoAdvance: true, after: []
@@ -74,7 +74,13 @@ window.MUMMY_STORY = (() => {
           },
           {
             before: [say('ghost', 'Can you fly?')], prompt: 'Answer for Cat.', instruction: 'Choose her answer.', mode: 'single', correct: ['can'], choices: no(),
-            hint: 'The cat can’t fly. Choose “No, I can’t.”', success: 'Mummy can fly. Cat can’t.',
+            hint: 'The cat can’t fly. Choose “No, I can’t.”', success: 'Cat can’t fly.',
+            autoAdvance: true, after: []
+          },
+          {
+            before: [say('cat', 'Your mummy can fly.\nI can’t fly.')], prompt: 'What can Mummy do?', instruction: '', mode: 'single', correct: ['fly'],
+            choices: [choice('swim', 'swim', { wordOnly: true }), choice('fly', 'fly', { wordOnly: true }), choice('jump', 'jump', { wordOnly: true })],
+            hint: 'Your mummy can fly.', success: 'The third clue!', unlock: ['fly'],
             after: [[say('ghost', 'Oh, you aren’t my mummy.\nMy mummy can fly.'), say('cat', 'Ha-ha! I am a cat.')], [say('ghost', 'Goodbye, Cat!\nLet’s look by the tree.')]]
           }
         ]

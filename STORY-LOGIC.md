@@ -9,12 +9,23 @@ The user accepted Version 3 as a final checkpoint before requesting this logic p
 - Exact commit: a316dd5eebd5755279b45b8328b4f2623203dbcd
 - The branch preserves the complete game and artwork. Do not move it when updating main.
 
-## Version 4: narrative continuity
+## Version 5: one new clue at each meeting
+
+| Meeting | Already known | New information and activity | Ribbon after the choice |
+| --- | --- | --- | --- |
+| Spider | Nothing | Spider gives only “She has got big brown eyes.” Choose the large brown pair from six eye pictures: blue, green, purple, large brown, small brown and grey. No colour or ability clue is given here. | big brown eyes · ? · ? · ? |
+| Frog | big brown eyes | Build “Have you got big brown eyes?” and read Frog’s answer. Ask “Are you my mummy?” Frog says “Your mummy is white. I am green.” Choose white from six colour circles. | big brown eyes · white · ? · ? |
+| Cat | big brown eyes · white | Choose Cat’s answers to the eyes, colour and flying questions. Cat gives “Your mummy can fly. I can’t fly.” Choose the word fly from swim / fly / jump, without pictures. Only then does the ghost say “My mummy can fly.” | big brown eyes · white · can fly · ? |
+| Owl | big brown eyes · white · can fly | Check the three known features. Owl explains “Your mummy hasn’t got any legs.” Choose no legs. | big brown eyes · white · can fly · no legs |
+
+All new facts come from an animal who has said they know Mummy. Each clue has exactly one unlock point. Incorrect choices leave the ribbon unchanged. Back navigation hides clues from later points even when their answers were previously completed.
+
+## Narrative continuity and layout
 
 | Moment | Correction |
 | --- | --- |
 | First meeting | Spider, Frog, Cat and Owl introduce themselves before the little ghost addresses them by name. |
-| Frog’s knowledge | The little ghost says “My mummy is white” before Frog uses that fact. |
+| Frog’s dialogue | The little ghost asks only “Are you my mummy?”, without stating Mummy’s colour. The white/green contrast and new colour clue come from Frog. Frog’s bubble is at the top right, alongside the ghost’s bubble, so both eyes remain visible. |
 | Owl’s knowledge | Owl says she knows Mummy, then answers “Where is she?” with “I can see her! She is at home.” The orchard background contains a distant house. |
 | Route | The ghost follows the path, looks by the gate, then looks by the tree; he does not name the next animal in advance. |
 | Going home | The house is visible as a distant landmark before the answer, then grows as the ghost approaches. He remains outside while asking where Mummy is. |
@@ -28,4 +39,4 @@ The user accepted Version 3 as a final checkpoint before requesting this logic p
 
 ## Verification
 
-The 20 activities were completed in the browser. Back navigation was checked from the ending to the early owl questions (no legs remains hidden), then to the beginning (all four clues hidden). Teacher replay was checked for enabled future tasks. The approach and reunion pages use the same ghost position before and after the transition. The house journey and wall entry finish before the next page. The longer spider introduction fits without a scrollbar at 1280 × 720. Source checks verify introductions before named farewells, shared information and valid answer/background references.
+V4’s complete 20-activity journey, replay, backward navigation, travel and wall entry were checked before this change. V5 has 21 activities: Cat’s new word choice adds the third clue. The changed Spider → Frog → Cat → Owl flow is checked in the browser for correct and incorrect choices, automatic answer transitions and the ribbon’s 1 → 2 → 3 → 4 progression. Frog’s question and colour reply are checked at 1920 × 920 and 1280 × 720; both eyes remain clear, and the question panel fits without scrolling. Source checks verify answer references, unique unlock points and the absence of later clues in Spider’s dialogue.
