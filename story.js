@@ -73,7 +73,7 @@ window.MUMMY_STORY = (() => {
             autoAdvance: true, after: []
           },
           {
-            before: [say('ghost', 'Can you fly?')], prompt: 'Choose her answer.', instruction: '', mode: 'single', correct: ['can'], choices: no(),
+            before: [say('cat', 'Your mummy can fly.'), say('ghost', 'Can you fly?')], prompt: 'Choose her answer.', instruction: '', mode: 'single', correct: ['can'], choices: no(),
             hint: 'Can you fly? — No, I can’t.', success: 'She can’t fly.',
             autoAdvance: true, after: []
           },
@@ -109,7 +109,7 @@ window.MUMMY_STORY = (() => {
             prompt: 'Choose the new clue.', instruction: 'My mummy has got…', mode: 'single', correct: ['none'],
             choices: [choice('two', 'two legs', { icon: 'two-legs' }), choice('four', 'four legs', { icon: 'four-legs' }), choice('none', 'no legs', { icon: 'no-legs' })],
             hint: 'Mummy hasn’t got any legs.', success: 'The fourth clue!', unlock: ['legs'],
-            after: [[say('ghost', 'My mummy has got no legs!\nWhere is she?')], [say('owl', 'I can see her! She is at home.\nGo home, little ghost!'), say('ghost', 'Thank you, Owl!')]]
+            after: [[say('ghost', 'My mummy has got no legs!\nWhere is she?')], [say('owl', 'Your mummy is at home.\nGo home, little ghost!'), say('ghost', 'Thank you, Owl!')]]
           }
         ]
       },
@@ -128,13 +128,13 @@ window.MUMMY_STORY = (() => {
           before: [say('ghost', 'Mummy! Where are you?'), say('voice', 'I’m in the living room!')], prompt: 'Choose the room.', instruction: 'Where is Mummy?', mode: 'pictures', correct: ['living'],
           choices: [choice('bedroom', 'bedroom', { room: 'bedroom' }), choice('bathroom', 'bathroom', { room: 'bathroom' }), choice('living', 'living room', { room: 'living' }), choice('kitchen', 'kitchen', { room: 'kitchen' })],
           hint: 'The living room has got a sofa.', success: 'The living room!', motion: 'room-glow',
-          after: [[say('ghost', 'Is that my mummy?\nHere I come!')]]
+          after: [[say('ghost', 'Here I come!')]]
         }]
       },
       {
         id: 'find-mummy', title: 'In the living room', place: 'In the living room', scene: 'find-mummy', background: 'living-room', partner: 'mummy',
         steps: [{
-          before: [], prompt: 'Where is she?', instruction: 'Look at the picture.', mode: 'single', correct: ['next'],
+          before: [say('ghost', 'Look! A white ghost!')], prompt: 'Where is she?', instruction: 'Look at the picture.', mode: 'single', correct: ['next'],
           choices: [choice('on', 'On the sofa.'), choice('next', 'Next to the sofa.'), choice('under', 'Under the table.')],
           hint: 'She is next to the sofa.', success: 'Next to the sofa!',
           after: [[say('ghost', 'Let’s ask her!')]], motion: 'ghost-approach'
