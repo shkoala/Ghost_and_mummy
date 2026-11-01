@@ -32,7 +32,7 @@ window.MUMMY_STORY = (() => {
       {
         id: 'spider', title: 'Meet Spider', place: 'Next to the spider’s web', scene: 'spider', background: 'spider-forest.webp', partner: 'spider',
         steps: [{
-          before: [say('ghost', 'Are you my mummy?'), say('spider', 'No, I’m not. I am a spider. But I know your mummy.'), say('spider', 'She has got big brown eyes.')],
+          before: [say('ghost', 'Are you my mummy?'), say('spider', 'No, I’m not. I am a spider.\nBut I know your mummy.'), say('spider', 'She has got big brown eyes.')],
           prompt: 'Choose her 👀.', instruction: '', mode: 'single', pictureGrid: true, correct: ['eyes'],
           choices: [choice('blue', 'big blue eyes', { icon: 'blue-eyes', pictureOnly: true }), choice('green', 'big green eyes', { icon: 'green-eyes', pictureOnly: true }), choice('purple', 'big purple eyes', { icon: 'purple-eyes', pictureOnly: true }), choice('eyes', 'big brown eyes', { icon: 'eyes', pictureOnly: true }), choice('small', 'small brown eyes', { icon: 'small-eyes', pictureOnly: true }), choice('grey', 'big grey eyes', { icon: 'grey-eyes', pictureOnly: true })],
           hint: 'She has got big brown eyes.', success: 'The first clue!', unlock: ['eyes'],
