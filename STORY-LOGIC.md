@@ -18,13 +18,13 @@ The user accepted Version 3 as a final checkpoint before requesting this logic p
 | Cat | big brown eyes · white | Choose Cat’s answers to the eyes, colour and flying questions. Cat gives “Your mummy can fly. I can’t fly.” Choose the word fly from swim / fly / jump, without pictures. Only then does the ghost say “My mummy can fly.” | big brown eyes · white · can fly · ? |
 | Owl | big brown eyes · white · can fly | Check the three known features. Owl explains “Your mummy hasn’t got any legs.” Choose no legs. | big brown eyes · white · can fly · no legs |
 
-Each new fact comes from the animal in the current scene. Frog introduces herself with only “Hello! I’m a frog.” Each clue has exactly one unlock point. Incorrect choices leave the ribbon unchanged. Back navigation hides clues from later points even when their answers were previously completed.
+Each new fact comes from the animal in the current scene. Animals state who they are near the end of their exchange, before the ghost uses their name. Frog starts with only “Hello!” and ends her colour reply with “I am green. I am a frog.” Each clue has exactly one unlock point. Incorrect choices leave the ribbon unchanged. Back navigation hides clues from later points even when their answers were previously completed.
 
 ## Narrative continuity and layout
 
 | Moment | Correction |
 | --- | --- |
-| First meeting | Spider, Frog, Cat and Owl introduce themselves before the little ghost addresses them by name. |
+| First meeting | Spider identifies herself after the eye clue; Frog after the colour contrast; Cat after the flying clue; Owl after the legs contrast. Named thanks and farewells follow these introductions. The early answer prompts do not reveal Cat’s name. |
 | Frog’s dialogue | The little ghost asks only “Are you my mummy?”, without stating Mummy’s colour. The white/green contrast and new colour clue come from Frog. Frog’s bubble is at the top right, alongside the ghost’s bubble, so both eyes remain visible. |
 | Owl’s knowledge | Owl says she knows Mummy, then answers “Where is she?” with “I can see her! She is at home.” The orchard background contains a distant house. |
 | Route | The ghost follows the path, looks by the gate, then looks by the tree; he does not name the next animal in advance. |
