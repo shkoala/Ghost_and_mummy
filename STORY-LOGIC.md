@@ -15,20 +15,20 @@ The user accepted Version 3 as a final checkpoint before requesting this logic p
 | --- | --- | --- | --- |
 | Spider | Nothing | Spider gives only “She has got big brown eyes.” Choose the large brown pair from six eye pictures: blue, green, purple, large brown, small brown and grey. No colour or ability clue is given here. | big brown eyes · ? · ? · ? |
 | Frog | big brown eyes | Build “Have you got big brown eyes?” and read Frog’s answer. Ask “Are you my mummy?” Frog says “Your mummy is white. I am green.” Choose white from six colour circles. | big brown eyes · white · ? · ? |
-| Cat | big brown eyes · white | Cat greets the child with “Hello, Little Ghost!”. Choose her answers to the eyes and colour questions. The ghost then asks “Are you my mummy?”. Cat replies “No, I’m not. I am Cat. I can’t fly. And your mummy can fly.” Choose fly from swim / fly / jump, without pictures, then go straight to the farewell. | big brown eyes · white · can fly · ? |
+| Cat | big brown eyes · white | Cat greets the child with “Hello, Little Ghost!”. Choose her answers to the eyes and colour questions. The ghost then asks “Are you my mummy?”. Cat replies “No, I’m not. I am a cat. I can’t fly. But your mummy can fly.” Choose fly from swim / fly / jump, without pictures, then go straight to the farewell. | big brown eyes · white · can fly · ? |
 | Owl | big brown eyes · white · can fly | Check the three known features. Owl explains “Your mummy hasn’t got any legs.” Choose no legs. | big brown eyes · white · can fly · no legs |
 
-Each new fact comes from the animal in the current scene. Spider introduces herself in her first reply; Frog, Cat and Owl identify themselves near the end of their exchange. All introduce themselves before the ghost uses their name. Frog starts with only “Hello!” and ends her colour reply with “I am green. I am Frog.” Each clue has exactly one unlock point. Incorrect choices leave the ribbon unchanged. Back navigation hides clues from later points even when their answers were previously completed.
+Each new fact comes from the animal in the current scene. Spider introduces herself in her first reply; Frog, Cat and Owl identify themselves near the end of their exchange. All introduce themselves before the ghost uses their name. Frog starts with only “Hello!” and ends her colour reply with “I am green. I am a frog.” Each clue has exactly one unlock point. Incorrect choices leave the ribbon unchanged. Back navigation hides clues from later points even when their answers were previously completed.
 
 ## Character names and wording
 
-The characters are named Little Ghost, Spider, Frog, Cat and Owl. Their spoken introductions use names without an indefinite article: “I’m Little Ghost”, “I am Spider”, “I am Frog”, “I am Cat” and “I am Owl”. Greetings, farewells, hints, picture labels and accessible descriptions use the same capitalisation. Owl’s third feature check says “Ask the last question.” instead of naming the ability to choose.
+Introductions describe what each character is: “I’m a little ghost”, “I am a spider”, “I am a frog”, “I am a cat” and “I am an owl”. These singular countable nouns use a/an and lower case. Little Ghost, Spider, Frog, Cat and Owl remain capitalised as personified names in direct address, cast labels, the recall activity and accessible character labels. Mummy is capitalised as a form of address or name, while my mummy and your mummy use lower case. Owl’s third feature check says “Ask the last question.” instead of naming the ability to choose.
 
 ## Narrative continuity and layout
 
 | Moment | Correction |
 | --- | --- |
-| First meeting | Spider says “No, I’m not. I am Spider. But I know your mummy.”, then gives the eye clue in a separate bubble. Frog identifies herself after the colour contrast; Cat in her reply to “Are you my mummy?”; Owl after the legs contrast. Named thanks and farewells follow these introductions. The early answer prompts do not reveal Cat’s name. |
+| First meeting | Spider says “No, I’m not. I am a spider. But I know your mummy.”, then gives the eye clue in a separate bubble. Frog identifies herself after the colour contrast; Cat in her reply to “Are you my mummy?”; Owl after the legs contrast. Named thanks and farewells follow these introductions. The early answer prompts do not reveal Cat’s name. |
 | Cat’s dialogue | Cat’s first line is only “Hello, Little Ghost!”. She does not say she knows Mummy at the start. The separate Can you fly? question and repeated Oh, you aren’t my mummy / Ha-ha! I am a cat exchange are removed. Choosing fly leads directly to Goodbye, Cat! |
 | Full eye answers | Every existing full answer says “I have got big brown eyes.” Frog’s and Owl’s responses both include big; short grammar answers remain Yes, I have. |
 | Frog’s dialogue | The little ghost asks only “Are you my mummy?”, without stating Mummy’s colour. The white/green contrast and new colour clue come from Frog. Frog’s bubble is at the top right, alongside the ghost’s bubble, so both eyes remain visible. |
@@ -52,8 +52,8 @@ The characters are named Little Ghost, Spider, Frog, Cat and Owl. Their spoken i
 | Scene | What the dialogue may use at that point |
 | --- | --- |
 | Forest path | The little ghost identifies himself and asks for help finding Mummy. No clue is known yet. |
-| Spider’s web | Spider first says “No, I’m not. I am Spider. But I know your mummy.” The separate clue bubble contains only “She has got big brown eyes.” The ghost then thanks Spider by name. |
-| Pond | The ghost asks about the known eyes. Frog gives the new white colour clue, contrasts it with her green colour and says “I am Frog.” “Bye, Frog!” follows. |
+| Spider’s web | Spider first says “No, I’m not. I am a spider. But I know your mummy.” The separate clue bubble contains only “She has got big brown eyes.” The ghost then thanks Spider by name. |
+| Pond | The ghost asks about the known eyes. Frog gives the new white colour clue, contrasts it with her green colour and says “I am a frog.” “Bye, Frog!” follows. |
 | Courtyard | The ghost checks the known eyes and white colour, then asks “Are you my mummy?”. Cat identifies herself, says she cannot fly and gives the new flying clue. The child chooses fly and the ghost says “Goodbye, Cat!”. No flying question or repeated conclusion is inserted. |
 | Tree | The ghost checks three known features. Owl gives the new no-legs clue and identifies herself before “Thank you, Owl!”. Her location answer comes before the journey home. |
 | Way home | The ghost repeats the location supplied by Owl. The child chooses the house from the three cards; the house appears in the story picture only after the correct choice. |
@@ -65,6 +65,14 @@ The characters are named Little Ghost, Spider, Frog, Cat and Owl. Their spoken i
 The source audit checks all correct answer IDs, one unlock point per clue, named thanks/farewells after each animal’s own introduction, and every feature or location mentioned by the ghost against information already supplied in the dialogue. V6 has 20 activities: Cat’s redundant flying question is removed, and her fly clue is now cat:2. The saved-progress version is 6 so a completed old cat:2 answer cannot skip the new exchange.
 
 Before the V6 revision, the complete V5 21-activity journey was played from a fresh start at 1280 × 720. It reached “I found my mummy!”, “Well done!” and an enabled Play again button with all four clues. V6’s changed Frog, Cat and Owl exchanges are checked separately for wording, clue order and face clearance. Previous layout and backwards-navigation checks remain listed below.
+
+### V6.4 articles, legs and speech
+
+Every spoken line was reviewed for beginner English: singular countable animal nouns use a/an, including “a little ghost”, “a spider”, “a frog”, “a cat” and “an owl”. Descriptions use lower-case common nouns; direct address and cast labels keep Little Ghost, Spider, Frog, Cat and Owl. The short answers match have got, be and can; full eye answers retain “big brown eyes”. The possessive phrases my mummy and your mummy have no article. Cat contrasts her inability with Mummy’s ability using “But your mummy can fly”. The original four clue unlocks and 20 activities are unchanged.
+
+The legs cards now show an outlined owl with two distinct feet, a standing cat with four separate legs and paws, and a ghost with no legs. The new icons, wrong answers and correct no-legs choice were checked at 1280 × 720 with no task-panel overflow. Spider’s, Cat’s and Owl’s revised introductions were checked in the browser; Frog’s article and face clearance were checked at 390 × 844 with no horizontal overflow.
+
+Speech takes its text only from the same currentLines list used to draw the visible bubbles. A focused check of the production reader captured the exact Owl and reunion dialogue, confirmed that it never accesses task content, and verified stop behaviour and silence for an empty dialogue. The browser check confirms that the speaker is enabled for visible bubbles and disabled for an empty dialogue. Instructions, answer options, feedback and hints are excluded. Availability of the device’s English voice is unchanged.
 
 ### V6.3 dialogue and colour check
 

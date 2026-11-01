@@ -63,7 +63,9 @@
   }
   const icon = name => {
     const eyes = colour => `<path d="M2 20C8 4 21 4 27 20c-6 13-19 13-25 0Zm35 0C43 4 56 4 62 20c-6 13-19 13-25 0Z" fill="#fff" stroke="#a78c79" stroke-width="1.5"/><circle cx="14.5" cy="19" r="9" fill="${colour}"/><circle cx="49.5" cy="19" r="9" fill="${colour}"/><circle cx="14.5" cy="19" r="5" fill="#302827"/><circle cx="49.5" cy="19" r="5" fill="#302827"/><circle cx="17" cy="16" r="2.5" fill="#fff"/><circle cx="52" cy="16" r="2.5" fill="#fff"/>`;
-    const legs = count => Array.from({ length: count }, (_, i) => `<path d="M${12 + i * (40 / Math.max(1, count - 1))} 8v23h-7" fill="none" stroke="#ad895b" stroke-width="5" stroke-linecap="round"/>`).join('');
+    const owlLegs = '<g stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="#97612e" stroke-width="3.3"><path d="M24 26v8m0-1-6 3m6-3v5m0-5 6 3M40 26v8m0-1-6 3m6-3v5m0-5 6 3"/></g><path d="M16 16C16 7 23 2 32 2s16 5 16 14c0 9-5 14-16 14s-16-5-16-14Z" fill="#fffdf7" stroke="#9c8a81" stroke-width="1.1"/><path d="M18 15q-1 9 8 12M46 15q1 9-8 12" fill="none" stroke="#d5ced8" stroke-width="2.4"/><g fill="#fff" stroke="#c1afa0" stroke-width=".8"><circle cx="25.5" cy="13.5" r="5.2"/><circle cx="38.5" cy="13.5" r="5.2"/></g><g fill="#8d5635"><circle cx="25.5" cy="13.5" r="3.8"/><circle cx="38.5" cy="13.5" r="3.8"/></g><g fill="#302827"><circle cx="25.5" cy="13.5" r="2.4"/><circle cx="38.5" cy="13.5" r="2.4"/></g><g fill="#fff"><circle cx="26.5" cy="12.3" r="1.1"/><circle cx="39.5" cy="12.3" r="1.1"/></g><path d="m29.5 19 2.5-2 2.5 2-2.5 4Z" fill="#efb340" stroke="#b77b2e" stroke-width=".8"/><path d="m28 25 4 2 4-2" fill="none" stroke="#e1d8da"/><path d="M24 29v4m16-4v4" fill="none" stroke="#efb340" stroke-width="2.1"/></g>';
+    const catFeet = [15, 25, 40, 50];
+    const catLegs = `<g stroke-linecap="round" stroke-linejoin="round"><path d="M14 19C2 22 1 5 7 4q6 0 4 6" fill="none" stroke="#9c8a81" stroke-width="6.2"/><path d="M14 19C2 22 1 5 7 4q6 0 4 6" fill="none" stroke="#fffdf7" stroke-width="4"/>${catFeet.map(x => `<path d="M${x - 2.4} 21l-.2 10q-3 1-1.6 4 4.2 2 8.4 0l-.8-4-1-10Z" fill="#fffdf7" stroke="#9c8a81" stroke-width="1.1"/>`).join('')}<path d="M11 18c0-6 7-9 17-8l14 2q7 1 8 6v7q-17 4-32 0-7-1-7-7Z" fill="#fffdf7" stroke="#9c8a81" stroke-width="1.1"/><path d="M17 21q11 6 25 2" fill="none" stroke="#e2dce5" stroke-width="1.4"/><path d="m43 13-1-10 7 3q4-1 7 1l5-4-1 11q2 9-8 9t-9-10Z" fill="#fffdf7" stroke="#9c8a81" stroke-width="1.1"/><path d="m44 6 1 5 3-3Zm13 3 2-3-1 6Z" fill="#eeb1a1"/><g fill="#8d5635"><ellipse cx="48" cy="13.5" rx="2.5" ry="3"/><ellipse cx="56.5" cy="13.5" rx="2.5" ry="3"/></g><g fill="#302827"><ellipse cx="48" cy="13.5" rx="1.3" ry="1.9"/><ellipse cx="56.5" cy="13.5" rx="1.3" ry="1.9"/></g><g fill="#fff"><circle cx="48.7" cy="12.4" r=".7"/><circle cx="57.2" cy="12.4" r=".7"/></g><path d="m50.5 17 2-1 2 1-2 2Z" fill="#d78f82"/><path d="M52.5 19q-2 3-4 0m4 0q2 3 4 0M43 18l-4-1m4 3-4 1m21-3 3-1m-3 3 3 1" fill="none" stroke="#ad8e80" stroke-width=".7"/>${catFeet.map(x => `<path d="M${x - 1} 33v2m3-2v2" fill="none" stroke="#c4b3a6" stroke-width=".7"/>`).join('')}</g>`;
     const items = {
       eyes: eyes('#8d5635'), 'blue-eyes': eyes('#4b8acb'), 'green-eyes': eyes('#70a347'),
       'purple-eyes': eyes('#9664c2'), 'grey-eyes': eyes('#8c8c8c'),
@@ -75,7 +77,7 @@
       orange: '<circle cx="32" cy="20" r="17" fill="#ed9939" stroke="#c37720" stroke-width="2"/>',
       purple: '<circle cx="32" cy="20" r="17" fill="#9664c2" stroke="#7646a0" stroke-width="2"/>',
       'no-legs': '<path d="M17 35V18a15 15 0 0 1 30 0v17l-5-4-5 4-5-4-5 4-5-4-5 4Z" fill="#fff" stroke="#aa99bc" stroke-width="1.8"/><circle cx="27" cy="17" r="3" fill="#885334"/><circle cx="38" cy="17" r="3" fill="#885334"/><path d="M28 25q5 5 10 0" fill="none" stroke="#885334" stroke-width="1.5"/>',
-      'two-legs': legs(2), 'four-legs': legs(4),
+      'two-legs': owlLegs, 'four-legs': catLegs,
       water: '<path d="M2 15q6-8 12 0t12 0t12 0t12 0t12 0M2 29q6-8 12 0t12 0t12 0t12 0t12 0" fill="none" stroke="#648da8" stroke-width="3" stroke-linecap="round"/>'
     };
     return `<svg viewBox="0 0 64 40" aria-hidden="true">${items[name] || items['no-legs']}</svg>`;
@@ -124,15 +126,15 @@
     speechSession++;
     if ('speechSynthesis' in window) window.speechSynthesis.cancel();
     speaking = false; $('listen').innerHTML = svg('listen');
-    $('listen').setAttribute('aria-pressed', 'false'); $('listen').setAttribute('aria-label', 'Read this page aloud');
+    $('listen').setAttribute('aria-pressed', 'false'); $('listen').setAttribute('aria-label', 'Read the speech bubbles aloud');
   }
   function readPage() {
     if (!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) { toast('The English voice is unavailable. Read the story together.'); return; }
     if (speaking) { stopSpeech(); return; }
     stopSpeech();
     const session = speechSession;
-    let text = currentLines().map(l => l.text).join(' ');
-    if (!opening()) text += ` ${step().prompt} ${step().instruction} ${solved() ? '' : step().choices.map(c => c.text).join('. ')}`;
+    const text = currentLines().map(l => l.text).join(' ').trim();
+    if (!text) return;
     const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-GB'; utterance.rate = .83;
     const voices = window.speechSynthesis.getVoices();
     const voice = voices.find(v => v.lang === 'en-GB') || voices.find(v => v.lang.startsWith('en'));
@@ -241,6 +243,7 @@
   }
   function graphic(name, cls = 'choice-graphic') {
     const box = node('span', cls); box.setAttribute('aria-hidden', 'true');
+    if (['two-legs', 'four-legs', 'no-legs'].includes(name)) box.classList.add('legs-graphic');
     if (name === 'fly') box.append(picture('owl'));
     else if (name === 'swim') {
       box.classList.add('swim-graphic'); box.append(picture('frog', 'swimmer'), markup(icon('water'))); box.lastChild.classList.add('waterline');
@@ -345,6 +348,7 @@
     $('next').replaceChildren(document.createTextNode(text), node('span', '', final && solved() ? '↻' : '→')); $('next').lastChild.setAttribute('aria-hidden', 'true');
     $('back').disabled = preparing || (progress.page === 0 && index() === 0 && !frame());
     $('teacher').disabled = preparing;
+    $('listen').disabled = preparing || currentLines().length === 0;
   }
   function render(options = {}) {
     clearTimeout(answerTimer);
