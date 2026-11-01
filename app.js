@@ -217,7 +217,7 @@
     else if (name === 'ghost-approach') ghost?.classList.add('approaching');
     else if (name === 'mummy-float') { mummy?.classList.add('rising'); duration = 1850; }
     else if (name === 'room-glow') { scene.classList.add('room-chosen'); ghost?.classList.add('entering-house'); duration = 1650; }
-    else if (name === 'reunite') scene.classList.add('is-reunited');
+    else if (name === 'reunite') { scene.classList.add('is-reunited'); duration = 1900; }
     updateNav();
     motionTimer = setTimeout(() => {
       scene.classList.remove('is-hopping', 'frog-entering'); owl?.classList.remove('is-flying', 'fly-enter', 'fly-circle'); mummy?.classList.remove('rising');

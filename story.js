@@ -84,7 +84,7 @@ window.MUMMY_STORY = (() => {
         id: 'owl', title: 'Meet Owl', place: 'Next to the tree', scene: 'owl', background: 'owl-garden.webp', partner: 'owl', enter: 'owl-enter',
         steps: [
           {
-            before: [say('owl', 'Hello!\nI know your mummy.'), say('ghost', 'Hello!')],
+            before: [say('owl', 'Hello, little ghost!'), say('ghost', 'Hello!')],
             prompt: 'Ask about her 👀.', instruction: 'Choose the question.', mode: 'single', correct: ['brown'], choices: eyes(),
             hint: 'Mummy has got big brown eyes.', success: 'Big brown eyes — yes!',
             after: [[say('ghost', 'Have you got big brown eyes?'), say('owl', 'Yes, I have.\nI have got big brown eyes.')]]

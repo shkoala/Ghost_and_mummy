@@ -28,13 +28,14 @@ Each new fact comes from the animal in the current scene. Spider introduces hers
 | Cat’s dialogue | Cat’s first line is only “Hello, little ghost!”. She does not say she knows Mummy at the start. The separate Can you fly? question and repeated Oh, you aren’t my mummy / Ha-ha! I am a cat exchange are removed. Choosing fly leads directly to Goodbye, Cat! |
 | Full eye answers | Every existing full answer says “I have got big brown eyes.” Frog’s and Owl’s responses both include big; short grammar answers remain Yes, I have. |
 | Frog’s dialogue | The little ghost asks only “Are you my mummy?”, without stating Mummy’s colour. The white/green contrast and new colour clue come from Frog. Frog’s bubble is at the top right, alongside the ghost’s bubble, so both eyes remain visible. |
-| Owl’s knowledge | Owl says she knows Mummy, then answers “Where is she?” with “Your mummy is at home.” She does not claim to see Mummy through the distant house’s walls. |
+| Owl’s greeting | Owl’s first line is only “Hello, little ghost!”. The extra “I know your mummy” line is removed. She later answers “Where is she?” with “Your mummy is at home.” |
 | Route | The ghost follows the path, looks by the gate, then looks by the tree; he does not name the next animal in advance. |
 | Going home | The house is visible as a distant landmark before the answer, then grows as the ghost approaches. He remains outside while asking where Mummy is. |
 | Entering | After the living room is chosen, he says “Here I come!”, passes through its wall, then appears in the interior view. He does not point to Mummy before seeing her. There is no key or opening door. |
 | First sight of the white ghost | In the living room he says “Look! A white ghost!” before the child answers “Where is she?”. She is called Mummy only after the identity answer is chosen. |
 | Recognition | The question panel says “Choose her answer” until the identity is confirmed; it does not identify the white ghost as Mummy in advance. |
-| Stable positions | The little ghost keeps his reached position when a movement is replayed, the next question appears or the page is restored. |
+| Room depth and reunion | Mummy starts farther back beside the sofa, smaller and higher in the scene. After the identity answer, the child glides sideways while Mummy glides forward and towards him, growing smoothly as she reaches the foreground. Their floor shadows move with them. |
+| Stable positions | The child’s reached position and Mummy’s rear position match between the location answer and the first recognition question. Their foreground positions match between the reunion and the final recall page. The recall page does not replay the entrance transition. |
 | Knowledge ribbon | Only actually chosen clues are shown, and only after the corresponding point in the story. Moving Back does not reveal later clues. |
 | Teacher replay | Restarting a selected scene clears it and all following scenes, retaining earlier answers. Old future answers cannot skip the story. |
 | Artwork loading | Scene images are loaded and decoded before a page transition; the next scene is preloaded during the current one. |
@@ -60,5 +61,9 @@ Each new fact comes from the animal in the current scene. Spider introduces hers
 The source audit checks all correct answer IDs, one unlock point per clue, named thanks/farewells after each animal’s own introduction, and every feature or location mentioned by the ghost against information already supplied in the dialogue. V6 has 20 activities: Cat’s redundant flying question is removed, and her fly clue is now cat:2. The saved-progress version is 6 so a completed old cat:2 answer cannot skip the new exchange.
 
 Before the V6 revision, the complete V5 21-activity journey was played from a fresh start at 1280 × 720. It reached “I found my mummy!”, “Well done!” and an enabled Play again button with all four clues. V6’s changed Frog, Cat and Owl exchanges are checked separately for wording, clue order and face clearance. Previous layout and backwards-navigation checks remain listed below.
+
+### V6.1 staging check
+
+Owl’s revised greeting and Mummy’s rear position were checked in the browser. Room staging was inspected at 1920 × 920, 1280 × 720 and 390 × 844. The reunion was completed on the wide and phone layouts: the child moves sideways, Mummy moves down towards the foreground and increases in size, and Next remains blocked during the movement. Computed positions match exactly across the approach-to-question and reunion-to-recall transitions. Both characters stay inside the phone picture. The reunion uses a 1.8-second transition and a 1.9-second navigation hold; reduced-motion behavior and saved-progress version 6 are retained.
 
 V4’s complete 20-activity journey, replay, backward navigation, travel and wall entry were checked before this change. V5 had 21 activities. Its Spider → Frog → Cat → Owl flow was checked for correct and incorrect choices, automatic answer transitions and the ribbon’s 1 → 2 → 3 → 4 progression. Frog’s question and colour reply were checked at 1920 × 920 and 1280 × 720. Source checks verify answer references, unique unlock points and the absence of later clues in Spider’s dialogue.
