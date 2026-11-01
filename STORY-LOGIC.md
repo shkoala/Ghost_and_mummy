@@ -18,13 +18,13 @@ The user accepted Version 3 as a final checkpoint before requesting this logic p
 | Cat | big brown eyes · white | Choose Cat’s answers to the eyes and colour questions. Cat first says “Your mummy can fly.” Then the ghost asks “Can you fly?” and the child chooses “No, I can’t.” Choose fly from swim / fly / jump, without pictures. Only then does the ghost state “My mummy can fly.” | big brown eyes · white · can fly · ? |
 | Owl | big brown eyes · white · can fly | Check the three known features. Owl explains “Your mummy hasn’t got any legs.” Choose no legs. | big brown eyes · white · can fly · no legs |
 
-Each new fact comes from the animal in the current scene. Animals state who they are near the end of their exchange, before the ghost uses their name. Frog starts with only “Hello!” and ends her colour reply with “I am green. I am a frog.” Each clue has exactly one unlock point. Incorrect choices leave the ribbon unchanged. Back navigation hides clues from later points even when their answers were previously completed.
+Each new fact comes from the animal in the current scene. Spider introduces herself in her first reply; Frog, Cat and Owl identify themselves near the end of their exchange. All introduce themselves before the ghost uses their name. Frog starts with only “Hello!” and ends her colour reply with “I am green. I am a frog.” Each clue has exactly one unlock point. Incorrect choices leave the ribbon unchanged. Back navigation hides clues from later points even when their answers were previously completed.
 
 ## Narrative continuity and layout
 
 | Moment | Correction |
 | --- | --- |
-| First meeting | Spider identifies herself after the eye clue; Frog after the colour contrast; Cat after the flying clue; Owl after the legs contrast. Named thanks and farewells follow these introductions. The early answer prompts do not reveal Cat’s name. |
+| First meeting | Spider says “No, I’m not. I am a spider. But I know your mummy.”, then gives the eye clue in a separate bubble. Frog identifies herself after the colour contrast; Cat after the flying clue; Owl after the legs contrast. Named thanks and farewells follow these introductions. The early answer prompts do not reveal Cat’s name. |
 | Frog’s dialogue | The little ghost asks only “Are you my mummy?”, without stating Mummy’s colour. The white/green contrast and new colour clue come from Frog. Frog’s bubble is at the top right, alongside the ghost’s bubble, so both eyes remain visible. |
 | Owl’s knowledge | Owl says she knows Mummy, then answers “Where is she?” with “Your mummy is at home.” She does not claim to see Mummy through the distant house’s walls. |
 | Route | The ghost follows the path, looks by the gate, then looks by the tree; he does not name the next animal in advance. |
@@ -45,7 +45,7 @@ Each new fact comes from the animal in the current scene. Animals state who they
 | Scene | What the dialogue may use at that point |
 | --- | --- |
 | Forest path | The little ghost identifies himself and asks for help finding Mummy. No clue is known yet. |
-| Spider’s web | Spider gives the eye clue and says “I am a spider.” Only then does the ghost thank Spider by name. |
+| Spider’s web | Spider first says “No, I’m not. I am a spider. But I know your mummy.” The separate clue bubble contains only “She has got big brown eyes.” The ghost then thanks Spider by name. |
 | Pond | The ghost asks about the known eyes. Frog gives the new white colour clue, contrasts it with her green colour and says “I am a frog.” “Bye, Frog!” follows. |
 | Courtyard | The ghost checks the known eyes and white colour. Cat gives the flying clue before the question about flying, then says “I am a cat” before “Goodbye, Cat!”. |
 | Tree | The ghost checks three known features. Owl gives the new no-legs clue and identifies herself before “Thank you, Owl!”. Her location answer comes before the journey home. |
