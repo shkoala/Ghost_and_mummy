@@ -148,7 +148,7 @@
   }
 
   function catPuppet() {
-    return markup('<svg viewBox="0 0 1142 1378" role="img" aria-label="White cat with brown eyes and a moving tail"><defs><clipPath id="tail-mask"><path d="M822 575H1142V1280H660L650 1170 782 1105 868 930 792 840Z"/></clipPath></defs><g class="cat-tail"><image href="assets/cat.png" width="1142" height="1378" clip-path="url(#tail-mask)"/></g><image href="assets/cat-body.png" width="1142" height="1378" preserveAspectRatio="none"/></svg>');
+    return markup('<svg viewBox="0 0 1142 1378" role="img" aria-label="Cat with white fur, big brown eyes and a moving tail"><defs><clipPath id="tail-mask"><path d="M822 575H1142V1280H660L650 1170 782 1105 868 930 792 840Z"/></clipPath></defs><g class="cat-tail"><image href="assets/cat.png" width="1142" height="1378" clip-path="url(#tail-mask)"/></g><image href="assets/cat-body.png" width="1142" height="1378" preserveAspectRatio="none"/></svg>');
   }
   function owlPuppet() {
     return markup(`<div class="owl-flyer" aria-hidden="true">${[0, 1, 2, 3].map(i => `<svg class="owl-frame pose-${i}" viewBox="${i % 2 * 627} ${Math.floor(i / 2) * 627} 627 627"><image href="assets/owl-flap.webp" width="1254" height="1254"/></svg>`).join('')}</div>`);
@@ -156,9 +156,9 @@
   function actor(name) {
     const a = node('div', `actor actor-${name}`); a.dataset.character = name;
     if (name === 'cat') a.append(catPuppet());
-    else if (name === 'owl') a.append(picture('owl-perched', 'owl-rest', 'White owl with two legs'), owlPuppet());
+    else if (name === 'owl') a.append(picture('owl-perched', 'owl-rest', 'Owl with white feathers and two legs'), owlPuppet());
     else if (name === 'frog') a.append(picture('frog', 'frog-idle', 'Frog'));
-    else a.append(picture(name === 'ghost' ? 'little-ghost' : name === 'spider' ? 'spider-eight.webp' : name, '', name === 'mummy' && page().scene !== 'ending' ? 'A white ghost with brown eyes' : story.speakers[name]?.name || name));
+    else a.append(picture(name === 'ghost' ? 'little-ghost' : name === 'spider' ? 'spider-eight.webp' : name, '', name === 'mummy' && page().scene !== 'ending' ? 'Ghost with big brown eyes' : story.speakers[name]?.name || name));
     return a;
   }
   function drawScene() {
@@ -170,7 +170,7 @@
     const world = node('div', 'world');
     if (p.scene === 'house') world.append(markup('<svg class="house-picture" viewBox="0 0 1536 1024" role="img" aria-label="A large house with four rooms"><image href="assets/house.png" width="1536" height="1024"/><rect class="room-highlight" x="100" y="545" width="610" height="345" rx="18"/></svg>'));
     else world.append(picture(p.background, 'environment', p.place));
-    if (p.scene === 'homeward') world.append(picture('house', 'home-house', 'The ghost’s house'));
+    if (p.scene === 'homeward') world.append(picture('house', 'home-house', 'Little Ghost’s house'));
     world.append(node('div', 'ground-shadow ghost-shadow'), actor('ghost'));
     if (p.partner) {
       if (['frog', 'cat', 'mummy'].includes(p.partner)) world.append(node('div', `ground-shadow ${p.partner}-shadow`));
