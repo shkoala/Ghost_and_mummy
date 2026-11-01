@@ -43,7 +43,7 @@ window.MUMMY_STORY = (() => {
         id: 'frog', title: 'Meet Frog', place: 'By the pond', scene: 'frog', background: 'pond-wide.webp', partner: 'frog', enter: 'frog-enter',
         steps: [
           {
-            before: [say('frog', 'Hello! I’m a frog.\nI know your mummy.'), say('ghost', 'Hello!')],
+            before: [say('frog', 'Hello! I’m a frog.'), say('ghost', 'Hello!')],
             prompt: 'Make the question.', instruction: 'Click the words in order.', mode: 'builder', correct: ['have', 'you', 'got', 'big', 'brown', 'eyes'],
             choices: [choice('brown', 'brown'), choice('got', 'got'), choice('eyes', 'eyes?'), choice('have', 'Have'), choice('big', 'big'), choice('you', 'you')],
             hint: 'Try again. Start with “Have you got…”', success: 'A perfect question!',

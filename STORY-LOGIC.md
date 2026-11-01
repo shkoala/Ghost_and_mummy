@@ -18,7 +18,7 @@ The user accepted Version 3 as a final checkpoint before requesting this logic p
 | Cat | big brown eyes · white | Choose Cat’s answers to the eyes, colour and flying questions. Cat gives “Your mummy can fly. I can’t fly.” Choose the word fly from swim / fly / jump, without pictures. Only then does the ghost say “My mummy can fly.” | big brown eyes · white · can fly · ? |
 | Owl | big brown eyes · white · can fly | Check the three known features. Owl explains “Your mummy hasn’t got any legs.” Choose no legs. | big brown eyes · white · can fly · no legs |
 
-All new facts come from an animal who has said they know Mummy. Each clue has exactly one unlock point. Incorrect choices leave the ribbon unchanged. Back navigation hides clues from later points even when their answers were previously completed.
+Each new fact comes from the animal in the current scene. Frog introduces herself with only “Hello! I’m a frog.” Each clue has exactly one unlock point. Incorrect choices leave the ribbon unchanged. Back navigation hides clues from later points even when their answers were previously completed.
 
 ## Narrative continuity and layout
 
