@@ -58,8 +58,8 @@ button:focus-visible,a:focus-visible,[tabindex='-1']:focus-visible{outline:3px s
 .scene-intro.ghost-departed .actor-ghost{left:36.95%}
 .scene-find-mummy.ghost-near-mummy .actor-ghost{left:16.75%}
 .scene-homeward .actor-ghost{width:29%;left:14%;height:43%}
-.home-house{position:absolute;left:53%;top:32%;width:45%;height:51%;object-fit:contain;opacity:1;transition:left 2.1s ease,top 2.1s ease,width 2.1s ease,height 2.1s ease;filter:drop-shadow(0 12px 12px #382e3940);z-index:1}
-.scene.home-arrival .home-house{left:2%;top:0;width:98%;height:100%}
+.home-house{position:absolute;left:53%;top:32%;width:45%;height:51%;object-fit:contain;opacity:0;visibility:hidden;transition:opacity .4s ease,left 2.1s ease,top 2.1s ease,width 2.1s ease,height 2.1s ease;filter:drop-shadow(0 12px 12px #382e3940);z-index:1}
+.scene.home-arrival .home-house{left:2%;top:0;width:98%;height:100%;opacity:1;visibility:visible}
 .scene.home-arrival .environment{filter:blur(2px) brightness(.85)}
 .scene.home-arrived .actor-ghost{left:2%;width:15%;height:27%;bottom:5%}
 .scene.home-arrival .ghost-shadow{opacity:0;animation:none;transition:opacity .5s}

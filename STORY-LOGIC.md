@@ -30,7 +30,7 @@ Each new fact comes from the animal in the current scene. Spider introduces hers
 | Frog’s dialogue | The little ghost asks only “Are you my mummy?”, without stating Mummy’s colour. The white/green contrast and new colour clue come from Frog. Frog’s bubble is at the top right, alongside the ghost’s bubble, so both eyes remain visible. |
 | Owl’s greeting | Owl’s first line is only “Hello, little ghost!”. The extra “I know your mummy” line is removed. She later answers “Where is she?” with “Your mummy is at home.” |
 | Route | The ghost follows the path, looks by the gate, then looks by the tree; he does not name the next animal in advance. |
-| Going home | The house is visible as a distant landmark before the answer, then grows as the ghost approaches. He remains outside while asking where Mummy is. |
+| Going home | Before the answer, only the forest path and the ghost are visible in the story picture. Choosing The house reveals the house with a short fade as it grows and the ghost approaches. Incorrect choices do not reveal it. He remains outside while asking where Mummy is. |
 | Entering | After the living room is chosen, he says “Here I come!”, passes through its wall, then appears in the interior view. He does not point to Mummy before seeing her. There is no key or opening door. |
 | First sight of the white ghost | In the living room he says “Look! A white ghost!” before the child answers “Where is she?”. She is called Mummy only after the identity answer is chosen. |
 | Recognition | The question panel says “Choose her answer” until the identity is confirmed; it does not identify the white ghost as Mummy in advance. |
@@ -52,7 +52,7 @@ Each new fact comes from the animal in the current scene. Spider introduces hers
 | Pond | The ghost asks about the known eyes. Frog gives the new white colour clue, contrasts it with her green colour and says “I am a frog.” “Bye, Frog!” follows. |
 | Courtyard | The ghost checks the known eyes and white colour, then asks “Are you my mummy?”. Cat identifies herself, says she cannot fly and gives the new flying clue. The child chooses fly and the ghost says “Goodbye, Cat!”. No flying question or repeated conclusion is inserted. |
 | Tree | The ghost checks three known features. Owl gives the new no-legs clue and identifies herself before “Thank you, Owl!”. Her location answer comes before the journey home. |
-| Way home | The ghost repeats the location supplied by Owl and chooses the already visible house. |
+| Way home | The ghost repeats the location supplied by Owl. The child chooses the house from the three cards; the house appears in the story picture only after the correct choice. |
 | House | The ghost asks where Mummy is. Her voice supplies the living room before the room choice and wall entry. |
 | Living room | A visible white ghost is introduced as the referent of “she”. The next-to-the-sofa answer follows the picture. |
 | Recognition | The four previously learned clues are checked. “Yes, I am!” confirms Mummy before “I love you, Mummy!”. |
@@ -61,6 +61,10 @@ Each new fact comes from the animal in the current scene. Spider introduces hers
 The source audit checks all correct answer IDs, one unlock point per clue, named thanks/farewells after each animal’s own introduction, and every feature or location mentioned by the ghost against information already supplied in the dialogue. V6 has 20 activities: Cat’s redundant flying question is removed, and her fly clue is now cat:2. The saved-progress version is 6 so a completed old cat:2 answer cannot skip the new exchange.
 
 Before the V6 revision, the complete V5 21-activity journey was played from a fresh start at 1280 × 720. It reached “I found my mummy!”, “Well done!” and an enabled Play again button with all four clues. V6’s changed Frog, Cat and Owl exchanges are checked separately for wording, clue order and face clearance. Previous layout and backwards-navigation checks remain listed below.
+
+### V6.2 house reveal check
+
+At 1280 × 720, the house is hidden both visually and from the accessibility tree before the answer. Choosing The pond leaves it hidden and Next disabled. Choosing The house reveals it and starts the existing approach; Next waits until the movement ends. Returning from the room-choice page and reloading a saved correct answer keep the arrived house visible. Restarting the scene from the teacher menu hides it again. This changes only the house visibility and fade; activity IDs and saved-progress version 6 are retained.
 
 ### V6.1 staging check
 
