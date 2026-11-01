@@ -1,7 +1,7 @@
 (() => {
   'use strict';
   const story = window.MUMMY_STORY;
-  const STORE = 'shkoala-mummy-story-v5';
+  const STORE = 'shkoala-mummy-story-v6';
   const $ = id => document.getElementById(id);
   const fresh = () => ({ version: story.version, page: 0, steps: {}, solved: [], drafts: {}, frames: {}, read: {} });
   let progress = load();

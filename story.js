@@ -8,7 +8,7 @@ window.MUMMY_STORY = (() => {
   const colours = () => [choice('green', 'Are you green?'), choice('white', 'Are you white?'), choice('black', 'Are you black?')];
   const abilities = () => [choice('jump', 'Can you jump?'), choice('fly', 'Can you fly?'), choice('swim', 'Can you swim?')];
   return {
-    version: 5,
+    version: 6,
     speakers: {
       ghost: { name: 'Little Ghost', colour: 'lilac' }, spider: { name: 'Spider', colour: 'sage' },
       frog: { name: 'Frog', colour: 'sage' }, cat: { name: 'Cat', colour: 'sage' }, owl: { name: 'Owl', colour: 'sage' },
@@ -47,7 +47,7 @@ window.MUMMY_STORY = (() => {
             prompt: 'Make the question.', instruction: 'Click the words in order.', mode: 'builder', correct: ['have', 'you', 'got', 'big', 'brown', 'eyes'],
             choices: [choice('brown', 'brown'), choice('got', 'got'), choice('eyes', 'eyes?'), choice('have', 'Have'), choice('big', 'big'), choice('you', 'you')],
             hint: 'Try again. Start with “Have you got…”', success: 'A perfect question!',
-            after: [[say('ghost', 'Have you got big brown eyes?'), say('frog', 'Yes, I have.\nI have got brown eyes.')]]
+            after: [[say('ghost', 'Have you got big brown eyes?'), say('frog', 'Yes, I have.\nI have got big brown eyes.')]]
           },
           {
             before: [say('ghost', 'Are you my mummy?'), say('frog', 'No, I’m not.\nYour mummy is white.\nI am green. I am a frog.')],
@@ -62,7 +62,7 @@ window.MUMMY_STORY = (() => {
         id: 'cat', title: 'Meet Cat', place: 'In the courtyard', scene: 'cat', background: 'courtyard-wide.webp', partner: 'cat',
         steps: [
           {
-            before: [say('cat', 'Hello!\nI know your mummy.'), say('ghost', 'Hello!\nHave you got big brown eyes?')],
+            before: [say('cat', 'Hello, little ghost!'), say('ghost', 'Hello!\nHave you got big brown eyes?')],
             prompt: 'Choose her answer.', instruction: '', mode: 'single', correct: ['have'], choices: yes(),
             hint: 'Have you got…? — Yes, I have.', success: 'Big brown eyes — yes!',
             autoAdvance: true, after: []
@@ -73,15 +73,10 @@ window.MUMMY_STORY = (() => {
             autoAdvance: true, after: []
           },
           {
-            before: [say('cat', 'Your mummy can fly.'), say('ghost', 'Can you fly?')], prompt: 'Choose her answer.', instruction: '', mode: 'single', correct: ['can'], choices: no(),
-            hint: 'Can you fly? — No, I can’t.', success: 'She can’t fly.',
-            autoAdvance: true, after: []
-          },
-          {
-            before: [say('cat', 'Your mummy can fly.\nI can’t fly.')], prompt: 'What can Mummy do?', instruction: '', mode: 'single', correct: ['fly'],
+            before: [say('ghost', 'Are you my mummy?'), say('cat', 'No, I’m not. I am a cat.\nI can’t fly.\nAnd your mummy can fly.')], prompt: 'What can Mummy do?', instruction: '', mode: 'single', correct: ['fly'],
             choices: [choice('swim', 'swim', { wordOnly: true }), choice('fly', 'fly', { wordOnly: true }), choice('jump', 'jump', { wordOnly: true })],
             hint: 'Your mummy can fly.', success: 'The third clue!', unlock: ['fly'],
-            after: [[say('ghost', 'Oh, you aren’t my mummy.\nMy mummy can fly.'), say('cat', 'Ha-ha! I am a cat.')], [say('ghost', 'Goodbye, Cat!\nLet’s look by the tree.')]]
+            after: [[say('ghost', 'Goodbye, Cat!\nLet’s look by the tree.')]]
           }
         ]
       },
@@ -92,7 +87,7 @@ window.MUMMY_STORY = (() => {
             before: [say('owl', 'Hello!\nI know your mummy.'), say('ghost', 'Hello!')],
             prompt: 'Ask about her 👀.', instruction: 'Choose the question.', mode: 'single', correct: ['brown'], choices: eyes(),
             hint: 'Mummy has got big brown eyes.', success: 'Big brown eyes — yes!',
-            after: [[say('ghost', 'Have you got big brown eyes?'), say('owl', 'Yes, I have.\nI have got brown eyes.')]]
+            after: [[say('ghost', 'Have you got big brown eyes?'), say('owl', 'Yes, I have.\nI have got big brown eyes.')]]
           },
           {
             before: [], prompt: 'Ask about her 🎨.', instruction: 'Choose the question.', mode: 'single', correct: ['white'], choices: colours(),
